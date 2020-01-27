@@ -1,0 +1,17 @@
+{
+  "name": "@endeavor-business-media/common",
+  "version": "0.0.0",
+  "author": "Josh Worden <josh@limit0.io>",
+  "repository": "https://github.com/base-cms-exports/endeavor-business-media/tree/master/packages/common",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js --max-warnings 5 ./",
+    "test": "yarn lint"
+  },
+  "dependencies": {
+    "@base-cms/object-path": "^1.0.0-rc.1",
+    "graphql": "^14.5.4",
+    "graphql-tag": "^2.10.1"
+  }
+}

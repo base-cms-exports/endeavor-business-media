@@ -1,0 +1,53 @@
+version: '3.7'
+
+x-node-defaults: &node
+  tty: true
+  init: true
+  image: node:10.15
+  entrypoint: ["node"]
+  working_dir: /root
+  restart: always
+  volumes:
+    - ./:/root:cached
+    - ./node_modules:/root/node_modules:delegated
+    - yarn-cache:/.yarn-cache
+
+x-export-command: &export-cmd
+  entrypoint: ["node_modules/.bin/basecms-exports"]
+  command: ["dev", "index.js"]
+
+x-env-defaults: &env
+  YARN_CACHE_FOLDER: /.yarn-cache
+  NODE_ENV: development
+  NEW_RELIC_ENABLED: ${NEW_RELIC_ENABLED-0}
+  NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY-(unset)}
+
+x-env-aerilon: &env-aerilon
+  GRAPHQL_URI: ${GRAPHQL_URI-https://aerilon.graphql.base-cms.io}
+
+x-env-caprica: &env-caprica
+  GRAPHQL_URI: ${GRAPHQL_URI-https://caprica.graphql.base-cms.io}
+
+x-env-gemenon: &env-gemenon
+  GRAPHQL_URI: ${GRAPHQL_URI-https://gemenon.graphql.base-cms.io}
+
+x-env-picon: &env-picon
+  GRAPHQL_URI: ${GRAPHQL_URI-https://picon.graphql.base-cms.io}
+
+services:
+  terminal:
+    <<: *node
+    working_dir: /root
+    entrypoint: ["/bin/bash"]
+    environment:
+      <<: *env
+
+  yarn:
+    <<: *node
+    working_dir: /root
+    entrypoint: ["yarn"]
+    environment:
+      <<: *env
+
+volumes:
+  yarn-cache: {}

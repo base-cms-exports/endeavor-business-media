@@ -1,0 +1,23 @@
+{
+  "name": "@endeavor-business-media/exports",
+  "description": "BaseCMS Exports for Endeavor Business Media",
+  "repository": "https://github.com/base-cms-exports/endeavor-business-media.git",
+  "author": "Josh Worden <josh@limit0.io>",
+  "license": "MIT",
+  "private": true,
+  "root": true,
+  "workspaces": [
+    "packages/*",
+    "tenants/*"
+  ],
+  "scripts": {
+    "lint": "lerna run lint",
+    "test": "lerna run test"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.2",
+    "lerna": "^3.16.4"
+  }
+}
