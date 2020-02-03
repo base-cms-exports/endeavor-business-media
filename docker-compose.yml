@@ -49,5 +49,20 @@ services:
     environment:
       <<: *env
 
+  vision-systems:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/vision-systems
+    environment:
+      <<: *env
+      <<: *env-aerilon
+      PORT: 80
+      EXPOSED_PORT: 19500
+      LIVERELOAD_PORT: 29500
+      TENANT_KEY: ebm_vsd
+    ports:
+      - "19500:80"
+      - "29500:29500"
+
 volumes:
   yarn-cache: {}

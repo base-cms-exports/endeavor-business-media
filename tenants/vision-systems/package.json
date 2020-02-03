@@ -1,0 +1,24 @@
+{
+  "name": "@endeavor-business-media/exports-vision-systems",
+  "version": "0.0.0",
+  "author": "Josh Worden <josh@limit0.io>",
+  "repository": "https://github.com/base-cms-exports/endeavor-business-media/tree/master/tenants/vision-systems",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "basecms-exports dev index.js",
+    "compile": "basecms-marko-compile compile --dir ./ --silent true",
+    "lint": "eslint --ext .js --max-warnings 5 ./",
+    "test": "yarn lint && yarn compile"
+  },
+  "dependencies": {
+    "@base-cms/export-cli": "^1.15.0",
+    "@base-cms/export-framework": "^1.15.0",
+    "@base-cms/marko-core": "^1.15.0",
+    "@base-cms/object-path": "^1.9.0",
+    "@endeavor-business-media/common": "^0.0.0",
+    "graphql": "^14.5.4",
+    "graphql-tag": "^2.10.1",
+    "newrelic": "^5.11.0"
+  }
+}
