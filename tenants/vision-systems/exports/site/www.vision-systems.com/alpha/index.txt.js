@@ -67,9 +67,24 @@ module.exports = async ({ apollo }) => {
     return address;
   };
 
+  const getLogo = (c) => {
+    const logo = [];
+    if (c.primaryImage !== null) {
+      logo.push('<ParaStyle:WhiteSpaceStart>');
+      logo.push(`<ParaStyle:Logo>${c.primaryImage.source.name}`);
+      logo.push('<ParaStyle:WhiteSpaceEnd>');
+
+      // push logo path to arrary for downloading later
+      companyLogos.push({ path: `https://cdn.baseplatform.io/${c.primaryImage.filePath}`, fileName: c.primaryImage.source.name });
+    }
+    return logo;
+  };
+
   // Wrap content in paragraph style
   const printContent = arr => arr.map((c) => {
     const text = [];
+    const logo = getLogo(c);
+    if (logo.length > 0) logo.forEach(companyLogo => text.push(companyLogo));
     text.push(`<ParaStyle:DirCoName>${c.name}`);
     const address = formatAddress(c);
     if (address.length > 0) address.forEach(companyAddress => text.push(companyAddress));
