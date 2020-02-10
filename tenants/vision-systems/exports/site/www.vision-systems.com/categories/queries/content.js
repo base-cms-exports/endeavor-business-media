@@ -14,6 +14,11 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         id
         name
         type
+        ... on ContentCompany {
+          city
+          country
+          website
+        }
         websiteSchedules {
           start
           end

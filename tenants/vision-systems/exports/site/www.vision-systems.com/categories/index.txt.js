@@ -86,7 +86,15 @@ module.exports = async ({ apollo }) => {
   const segments = await mapHierarchy(sections, companies);
 
   // Wrap content in paragraph style
-  const printContent = arr => arr.map(c => `<ParaStyle:CatCoName>${c.name}`);
+  const printContent = arr => arr.map((c) => {
+    const text = [];
+    text.push(`<ParaStyle:CatCoName>${c.name}`);
+    let { country } = c;
+    if (country.toLowerCase() === 'united states') country = '';
+    if (country.toLowerCase() !== 'united kingdom') country = 'UK';
+    text.push(`<ParaStyle:CatCoAddress>${c.city}, ${country}; ${c.website}`);
+    return text.join('\n');
+  });
 
   // The big kahuna. Expands children and content into the accumulator (arr)
   const printSection = (arr, { name, children, content }) => [
