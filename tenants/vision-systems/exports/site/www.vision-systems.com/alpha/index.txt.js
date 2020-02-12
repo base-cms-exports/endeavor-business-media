@@ -1,6 +1,6 @@
 const paginateQuery = require('@endeavor-business-media/common/paginate-query');
 const allPublishedContentQuery = require('./queries/content');
-const { downloadImages, zipItUp, uploadToS3 } = require('./image-downloader.js');
+const { downloadImages, zipItUp, uploadToS3 } = require('./image-handler.js');
 
 const exportName = `export-${Date.now()}.zip`;
 const companyLogos = [];
@@ -75,10 +75,8 @@ module.exports = async ({ apollo }) => {
       logo.push('<ParaStyle:WhiteSpaceStart>');
       logo.push(`<ParaStyle:Logo>${c.primaryImage.source.name}`);
       logo.push('<ParaStyle:WhiteSpaceEnd>');
-
       // push logo path to arrary for downloading later
-      companyLogos.push(`https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`)
-      // companyLogos.push({ path: `${c.primaryImage.filePath}`, fileName: c.primaryImage.source.name });
+      companyLogos.push(`https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`);
     }
     return logo;
   };
