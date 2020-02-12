@@ -1,6 +1,8 @@
 const paginateQuery = require('@endeavor-business-media/common/paginate-query');
 const allPublishedContentQuery = require('./queries/content');
+const { downloadImages, zipItUp, uploadToS3 } = require('./image-downloader.js');
 
+const exportName = `export-${Date.now()}.zip`;
 const companyLogos = [];
 
 const retrieveCompanies = async (apollo) => {
@@ -75,7 +77,8 @@ module.exports = async ({ apollo }) => {
       logo.push('<ParaStyle:WhiteSpaceEnd>');
 
       // push logo path to arrary for downloading later
-      companyLogos.push({ path: `https://cdn.baseplatform.io/${c.primaryImage.filePath}`, fileName: c.primaryImage.source.name });
+      companyLogos.push(`https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`)
+      // companyLogos.push({ path: `${c.primaryImage.filePath}`, fileName: c.primaryImage.source.name });
     }
     return logo;
   };
@@ -97,6 +100,17 @@ module.exports = async ({ apollo }) => {
     '<ASCII-MAC>', // @todo detect and/or make query a param
     ...printContent(companies),
   ];
+
+  const tmpDir = `${__dirname}/tmp`;
+
+  // Tempararly download all logs for zipping up.
+  await downloadImages(`${tmpDir}/images`, companyLogos);
+  // Zip up all logos required for export
+  zipItUp(`${tmpDir}/images`, tmpDir, exportName);
+  // push a tmp zip file of image to the S3 server
+  uploadToS3('base-cms-exports', 'exports', `${tmpDir}/${exportName}`);
+
+  lines.push(`<ParaStyel:LogoDownloadPath>https://base-cms-exports.s3.amazonaws.com/exports/${exportName}`);
 
   // @todo port special character filter from php
   return lines.join('\n');
