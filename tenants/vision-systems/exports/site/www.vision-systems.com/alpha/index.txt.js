@@ -54,14 +54,14 @@ const retrieveCompanies = async (apollo) => {
 module.exports = async ({ apollo }) => {
   const companies = await retrieveCompanies(apollo);
 
-  const formatAddress = (c) => {
+  const formatAddress = (c, appendedStyleText) => {
     const address = [];
     let streetLoc = '';
-    if (c.address1) streetLoc += `<ParaStyle:DirCoAddress>${c.address1}`;
+    if (c.address1) streetLoc += `<ParaStyle:DirCoAddress${appendedStyleText}>${c.address1}`;
     if (c.address2) streetLoc += `${c.address2}`;
     if (streetLoc !== '') address.push(streetLoc);
     let cityStateZip = '';
-    if (c.city) cityStateZip += `<ParaStyle:DirCoAddress>${c.city}`;
+    if (c.city) cityStateZip += `<ParaStyle:DirCoAddress${appendedStyleText}>${c.city}`;
     if (c.state) cityStateZip += `, ${c.state}`;
     if (c.postalCode) cityStateZip += `, ${c.postalCode}`;
     if (c.country) cityStateZip += ` ${c.country}`;
@@ -69,28 +69,58 @@ module.exports = async ({ apollo }) => {
     return address;
   };
 
-  const getLogo = (c) => {
-    const logo = [];
-    if (c.primaryImage !== null) {
-      logo.push('<ParaStyle:WhiteSpaceStart>');
-      logo.push(`<ParaStyle:Logo>${c.primaryImage.source.name}`);
-      logo.push('<ParaStyle:WhiteSpaceEnd>');
-      // push logo path to arrary for downloading later
-      companyLogos.push(`https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`);
-    }
-    return logo;
-  };
+  // Test Examples
+  // Ad only
+  // COMPANY • 16752537 • PUBLISHED • 02/06/2020, 12:00AM
+  // Smart Vision Lights
+  // Logo Only
+  // COMPANY • 16752431 • PUBLISHED • 12/28/2015, 2:56PM
+  // Xilinx, Inc.
+  // Ad & Logo
+  // COMPANY • 16752615 • PUBLISHED • 08/07/2018, 10:02AM
+  // LUCID Vision Labs, Inc.
+  // const getLogo = (c, taxonomyIds) => {
+  //   const logo = [];
+  //   let logoStyle = '<ParaStyle:';
+  //   if (c.primaryImage !== null) {
+  //     if (taxonomyIds.includes(2024375)) {
+  //       logoStyle = `${logoStyle}Logo`;
+  //     }
+  //     if (taxonomyIds.includes(2024376)) {
+  //       logoStyle = `${logoStyle}Ad`;
+  //     }
+  //     if (logoStyle !== '<ParaStyle:') {
+  //       logo.push(`${logoStyle}>${c.primaryImage.source.name}`);
+  //       // push logo path to arrary for downloading later
+  //       companyLogos.push(`https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`);
+  //     }
+  //   }
+  //   return logo;
+  // };
+
+  const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
 
   // Wrap content in paragraph style
   const printContent = arr => arr.map((c) => {
     const text = [];
-    const logo = getLogo(c);
-    if (logo.length > 0) logo.forEach(companyLogo => text.push(companyLogo));
-    text.push(`<ParaStyle:DirCoName>${c.name}`);
-    const address = formatAddress(c);
+    const taxonomyIds = getTaxonomyIds(c.taxonomy.edges);
+    // const logo = getLogo(c, taxonomyIds);
+    // if (logo.length > 0) logo.forEach(companyLogo => text.push(companyLogo));
+    let appendedStyleText = '';
+    if (taxonomyIds.includes(2024375)) {
+      appendedStyleText = `${appendedStyleText}Logo`;
+    }
+    if (taxonomyIds.includes(2024376)) {
+      appendedStyleText = `${appendedStyleText}Ad`;
+    }
+    if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
+    if (taxonomyIds.includes(2024375) && c.primaryImage !== null) text.push(`<ParaStyle:${appendedStyleText}>${c.primaryImage.source.name}`);
+    text.push(`<ParaStyle:DirCoName${appendedStyleText}>${c.name}`);
+    const address = formatAddress(c, appendedStyleText);
     if (address.length > 0) address.forEach(companyAddress => text.push(companyAddress));
-    if (c.phone) text.push(`<ParaStyle:DirCoPhone>PH: ${c.phone}`);
-    if (c.website) text.push(`<ParaStyle:DirCoWebsite>${c.website.replace('https://', '').replace('http://', '')}`);
+    if (c.phone) text.push(`<ParaStyle:DirCoPhone${appendedStyleText}>PH: ${c.phone}`);
+    if (c.website) text.push(`<ParaStyle:DirCoWebsite${appendedStyleText}>${c.website.replace('https://', '').replace('http://', '')}`);
+    if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     return text.join('\n');
   });
 
@@ -102,7 +132,7 @@ module.exports = async ({ apollo }) => {
   const tmpDir = `${__dirname}/tmp`;
 
   // Tempararly download all logs for zipping up.
-  await downloadImages(`${tmpDir}/images`, companyLogos);
+  await downloadImages(`${tmpDir}/images`, companyLogos.slice(0, 200));
   // Zip up all logos required for export
   zipItUp(`${tmpDir}/images`, tmpDir, exportName);
   // push a tmp zip file of image to the S3 server
