@@ -89,10 +89,10 @@ module.exports = async ({ apollo }) => {
   const printContent = arr => arr.map((c) => {
     const text = [];
     text.push(`<ParaStyle:CatCoName>${c.name}`);
-    let { country } = c;
-    if (country.toLowerCase() === 'united states') country = '';
-    if (country.toLowerCase() !== 'united kingdom') country = 'UK';
-    text.push(`<ParaStyle:CatCoAddress>${c.city}, ${country}; ${c.website}`);
+    // let { country } = c;
+    // if (country.toLowerCase() === 'united states') country = '';
+    // if (country.toLowerCase() !== 'united kingdom') country = 'UK';
+    // text.push(`<ParaStyle:CatCoAddress>${c.city}, ${country}; ${c.website}`);
     return text.join('\n');
   });
 
