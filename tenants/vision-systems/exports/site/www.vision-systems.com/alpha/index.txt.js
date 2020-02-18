@@ -19,6 +19,7 @@ const retrieveCompanies = async (apollo) => {
 
 module.exports = async ({ apollo }) => {
   const companies = await retrieveCompanies(apollo);
+  companies.sort((a, b) => a.name.localeCompare(b.name));
 
   const formatAddress = (c, appendedStyleText) => {
     const address = [];
