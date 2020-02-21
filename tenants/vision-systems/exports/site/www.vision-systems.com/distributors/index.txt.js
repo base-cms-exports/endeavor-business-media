@@ -1,10 +1,8 @@
 const { getAsArray, getAsObject } = require('@base-cms/object-path');
 const { isValid, getName, getAlpha2Code } = require('i18n-iso-countries');
-const { inspect } = require('util');
 const paginateQuery = require('@endeavor-business-media/common/paginate-query');
 const usRegions = require('../us-regions');
 const allPublishedContentQuery = require('./queries/content');
-const { downloadImages, zipItUp, uploadToS3 } = require('../image-handler.js');
 
 const countryCodes = {
   'Cote D Ivoire': 'CI',
@@ -43,14 +41,7 @@ const setCountryName = (value) => {
   return value;
 };
 
-const compare = (a, b) => {
-  const countryA = a.country;
-  const countryB = b.country;
-  const result = `${countryA}`.localeCompare(countryB);
-  if (result === 0) return compareRegion(a, b);
-  return result;
-};
-
+const compareNames = (a, b) => `${a.name}`.localeCompare(`${b.name}`);
 const compareRegion = (a, b) => {
   if (a.country === 'United States of America') {
     const result = `${a.state}`.localeCompare(b.state);
@@ -60,7 +51,13 @@ const compareRegion = (a, b) => {
   return compareNames(a, b);
 };
 
-const compareNames = (a, b) => `${a.name}`.localeCompare(`${b.name}`);
+const compare = (a, b) => {
+  const countryA = a.country;
+  const countryB = b.country;
+  const result = `${countryA}`.localeCompare(countryB);
+  if (result === 0) return compareRegion(a, b);
+  return result;
+};
 
 const retrieveCompanies = async (apollo) => {
   const promise = await paginateQuery({
