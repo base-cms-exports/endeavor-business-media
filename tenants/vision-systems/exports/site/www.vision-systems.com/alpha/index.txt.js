@@ -70,16 +70,18 @@ module.exports = async ({ apollo }) => {
     ...printContent(companies),
   ];
 
-  const tmpDir = `${__dirname}/tmp`;
 
-  // Tempararly download all logs for zipping up.
-  await downloadImages(`${tmpDir}/images`, companyLogos.slice(0, 200));
-  // Zip up all logos required for export
-  zipItUp(`${tmpDir}/images`, tmpDir, exportName);
-  // push a tmp zip file of image to the S3 server
-  uploadToS3('base-cms-exports', 'exports', `${tmpDir}/${exportName}`);
+  if (companyLogos.length !== 0) {
+    const tmpDir = `${__dirname}/tmp`;
+    // Tempararly download all logs for zipping up.
+    await downloadImages(`${tmpDir}/images`, companyLogos.slice(0, 200));
+    // Zip up all logos required for export
+    zipItUp(`${tmpDir}/images`, tmpDir, exportName);
+    // push a tmp zip file of image to the S3 server
+    uploadToS3('base-cms-exports', 'exports', `${tmpDir}/${exportName}`);
 
-  lines.push(`<ParaStyel:LogoDownloadPath>https://base-cms-exports.s3.amazonaws.com/exports/${exportName}`);
+    lines.push(`<ParaStyel:LogoDownloadPath>https://base-cms-exports.s3.amazonaws.com/exports/${exportName}`);
+  }
 
   // @todo port special character filter from php
   return lines.join('\n');
