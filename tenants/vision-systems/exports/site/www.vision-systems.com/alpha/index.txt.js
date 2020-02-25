@@ -74,7 +74,7 @@ module.exports = async ({ apollo }) => {
   if (companyLogos.length !== 0) {
     const tmpDir = `${__dirname}/tmp`;
     // Tempararly download all logs for zipping up.
-    await downloadImages(`${tmpDir}/images`, companyLogos.slice(0, 200));
+    await downloadImages(`${tmpDir}/images`, companyLogos);
     // Zip up all logos required for export
     await zipItUp(`${tmpDir}/images`, tmpDir, exportName);
     // push a tmp zip file of image to the S3 server
