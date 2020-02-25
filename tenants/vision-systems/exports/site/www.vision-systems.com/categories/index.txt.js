@@ -111,6 +111,7 @@ module.exports = async ({ apollo }) => {
       companyLogos.push(`https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`);
       if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     }
+    if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     // let { country } = c;
     // if (country.toLowerCase() === 'united states') country = '';
     // if (country.toLowerCase() !== 'united kingdom') country = 'UK';
