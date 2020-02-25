@@ -109,7 +109,7 @@ module.exports = async ({ apollo }) => {
     if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
       text.push(`<ParaStyle:${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
-      if (!companyLogos.indexOf(imgPath)) companyLogos.push(imgPath);
+      if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
       if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     }
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
