@@ -23,11 +23,15 @@ const downloadImages = async (tmpDir, filePaths) => Promise.all(filePaths.map((u
   });
 }));
 
-const zipItUp = (tmpDirToZip, tmpDirToPlace, exportName) => {
+const zipItUp = (tmpDirToZip, tmpDirToPlace, exportName) => new Promise((resolve, reject) => {
   zipFolder(tmpDirToZip, `${tmpDirToPlace}/${exportName}`, (err) => {
-    if (err) throw (err);
+    if (err) {
+      reject();
+    } else {
+      resolve();
+    }
   });
-};
+});
 
 const uploadToS3 = (bucket, keyPrefix, filePath) => {
   const fileName = path.basename(filePath);
@@ -40,6 +44,7 @@ const uploadToS3 = (bucket, keyPrefix, filePath) => {
         Bucket: bucket,
         Key: keyName,
         Body: fileStream,
+        ContentType: 'application/zip',
       },
     ).promise().then(resolve, reject);
   });

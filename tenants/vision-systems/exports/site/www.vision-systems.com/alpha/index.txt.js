@@ -76,7 +76,7 @@ module.exports = async ({ apollo }) => {
     // Tempararly download all logs for zipping up.
     await downloadImages(`${tmpDir}/images`, companyLogos.slice(0, 200));
     // Zip up all logos required for export
-    zipItUp(`${tmpDir}/images`, tmpDir, exportName);
+    await zipItUp(`${tmpDir}/images`, tmpDir, exportName);
     // push a tmp zip file of image to the S3 server
     uploadToS3('base-cms-exports', 'exports', `${tmpDir}/${exportName}`);
 
