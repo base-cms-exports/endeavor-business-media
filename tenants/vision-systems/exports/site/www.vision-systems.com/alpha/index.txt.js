@@ -54,7 +54,8 @@ module.exports = async ({ apollo }) => {
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
     if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
       text.push(`<ParaStyle:${appendedStyleText}>${c.primaryImage.source.name}`);
-      companyLogos.push(`https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`);
+      const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
+      if (!companyLogos.indexOf(imgPath)) companyLogos.push(imgPath);
     }
     text.push(`<ParaStyle:DirCoName${appendedStyleText}>${c.name}`);
     const address = formatAddress(c, appendedStyleText);
