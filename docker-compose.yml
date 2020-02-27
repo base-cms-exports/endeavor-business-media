@@ -53,8 +53,6 @@ services:
     <<: *node
     <<: *export-cmd
     working_dir: /root/tenants/vision-systems
-    env_file:
-      - .env
     environment:
       <<: *env
       <<: *env-aerilon
@@ -62,6 +60,8 @@ services:
       EXPOSED_PORT: 19500
       LIVERELOAD_PORT: 29500
       TENANT_KEY: ebm_vsd
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     ports:
       - "19500:80"
       - "29500:29500"

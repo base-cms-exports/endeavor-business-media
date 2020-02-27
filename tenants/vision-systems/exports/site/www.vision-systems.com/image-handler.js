@@ -3,13 +3,15 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const zipFolder = require('zip-folder');
 const AWS = require('aws-sdk');
-require('dotenv').config();
+const {
+  AWS_ACCESS_KEY,
+  AWS_SECRET_ACCESS_KEY,
+} = require('../../../env');
 
 const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: AWS_ACCESS_KEY,
+  secretAccessKey: AWS_SECRET_ACCESS_KEY,
 });
-
 
 const downloadImages = async (tmpDir, filePaths) => Promise.all(filePaths.map((url) => {
   // create the directory if it doesn't exists
