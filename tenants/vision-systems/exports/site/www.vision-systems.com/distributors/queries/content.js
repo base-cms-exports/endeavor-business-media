@@ -32,6 +32,14 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
           }
           filePath
         }
+        websiteSchedules {
+          start
+          end
+          section {
+            id
+            name
+          }
+        }
       }
     }
   }
