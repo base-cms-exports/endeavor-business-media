@@ -3,7 +3,7 @@ const paginateQuery = require('@endeavor-business-media/common/paginate-query');
 
 const allPublishedContentQuery = require('./queries/content');
 const websiteSectionsQuery = require('./queries/sections');
-const { downloadImages, zipItUp, uploadToS3 } = require('../image-handler.js');
+const { downloadImages, zipItUp, uploadToS3 } = require('../utils/image-handler');
 
 const exportName = `export-${Date.now()}.zip`;
 const companyLogos = [];

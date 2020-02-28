@@ -1,62 +1,17 @@
-const { getAsArray } = require('@base-cms/object-path');
-const paginateQuery = require('@endeavor-business-media/common/paginate-query');
 const allPublishedContentQuery = require('./queries/content');
 const websiteSectionsQuery = require('./queries/sections');
-const { downloadImages, zipItUp, uploadToS3 } = require('../image-handler.js');
+const { downloadImages, zipItUp, uploadToS3 } = require('../utils/image-handler');
+const { retrieveCompanies } = require('../utils/retrieve-companies');
+const { retrieveRootSection } = require('../utils/retrieve-root-section');
+const { retrieveFilterdCompanies } = require('../utils/retrieve-filtered-companies');
 
 const exportName = `export-${Date.now()}.zip`;
 const companyLogos = [];
 
-const retrieveRootSection = async (client) => {
-  const { data: { websiteSectionAlias } } = await client.query({
-    query: websiteSectionsQuery,
-    variables: { input: { alias: 'directory' } },
-  });
-  return websiteSectionAlias;
-};
-
-const retrieveCompanies = async (apollo) => {
-  const promise = await paginateQuery({
-    client: apollo,
-    query: allPublishedContentQuery,
-    variables: { input: { includeContentTypes: 'Company', pagination: { limit: 250 }, sort: { field: 'name', order: 'asc' } } },
-    cursorPath: 'input.pagination.after',
-    rootValue: 'allPublishedContent',
-  });
-  const now = Date.now().valueOf();
-  return promise.map((company) => {
-    const sectionIds = getAsArray(company, 'websiteSchedules')
-      .filter(({ start, end }) => start < now && (!end || end > now))
-      .map(({ section }) => section.id);
-    return { ...company, sectionIds };
-  });
-};
-
-const mapHierarchyIds = (sections, sectionIds) => {
-  sections.forEach((section) => {
-    if (!sectionIds.includes(section.id)) sectionIds.push(section.id);
-    const childNodes = getAsArray(section, 'children.edges').map(({ node }) => node);
-    if (childNodes.length) mapHierarchyIds(childNodes, sectionIds);
-    return sectionIds;
-  });
-  return sectionIds;
-};
-
-const getFilterdCompanies = (allCompanies, rootSection) => {
-  const primarySections = getAsArray(rootSection, 'children.edges').map(({ node }) => node);
-  const primarySectionsIds = getAsArray(rootSection, 'children.edges').map(({ node }) => node.id);
-  const direcotrySectionIds = mapHierarchyIds(primarySections, primarySectionsIds);
-  const companies = allCompanies.filter(({ sectionIds }) => {
-    const insert = sectionIds.filter(element => direcotrySectionIds.includes(element));
-    return insert.length !== 0;
-  });
-  return companies;
-};
-
 module.exports = async ({ apollo }) => {
-  const rootSection = await retrieveRootSection(apollo);
-  const allCompanies = await retrieveCompanies(apollo);
-  const companies = getFilterdCompanies(allCompanies, rootSection);
+  const rootSection = await retrieveRootSection(apollo, websiteSectionsQuery, 'directory');
+  const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery);
+  const companies = retrieveFilterdCompanies(allCompanies, rootSection);
 
   companies.sort((a, b) => a.name.localeCompare(b.name));
   const formatAddress = (c, appendedStyleText) => {

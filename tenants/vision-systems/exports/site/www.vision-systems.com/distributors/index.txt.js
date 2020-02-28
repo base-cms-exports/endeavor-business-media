@@ -1,7 +1,7 @@
 const { getAsArray, getAsObject } = require('@base-cms/object-path');
 const { isValid, getName, getAlpha2Code } = require('i18n-iso-countries');
 const paginateQuery = require('@endeavor-business-media/common/paginate-query');
-const usRegions = require('../us-regions');
+const usRegions = require('../utils/us-regions');
 const allPublishedContentQuery = require('./queries/content');
 
 const countryCodes = {
