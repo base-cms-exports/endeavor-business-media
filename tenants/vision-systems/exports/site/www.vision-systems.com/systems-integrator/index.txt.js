@@ -1,8 +1,11 @@
 const { getAsArray, getAsObject } = require('@base-cms/object-path');
 const { isValid, getName, getAlpha2Code } = require('i18n-iso-countries');
-const paginateQuery = require('@endeavor-business-media/common/paginate-query');
 const usRegions = require('../utils/us-regions');
+const websiteSectionsQuery = require('./queries/sections');
 const allPublishedContentQuery = require('./queries/content');
+const { retrieveRootSection } = require('../utils/retrieve-root-section');
+const { retrieveCompanies } = require('../utils/retrieve-companies');
+const { retrieveFilterdCompanies } = require('../utils/retrieve-filtered-companies');
 
 const countryCodes = {
   'Cote D Ivoire': 'CI',
@@ -59,24 +62,12 @@ const compare = (a, b) => {
   return result;
 };
 
-const retrieveCompanies = async (apollo) => {
-  const promise = await paginateQuery({
-    client: apollo,
-    query: allPublishedContentQuery,
-    variables: { input: { includeContentTypes: 'Company', pagination: { limit: 250 }, sort: { field: 'name', order: 'asc' } } },
-    cursorPath: 'input.pagination.after',
-    rootValue: 'allPublishedContent',
-  });
-
-  return promise;
-};
-
 module.exports = async ({ apollo }) => {
-  const allCompanies = await retrieveCompanies(apollo);
+  const rootSection = await retrieveRootSection(apollo, websiteSectionsQuery, 'directory');
+  const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery);
+  const directoryCompanies = retrieveFilterdCompanies(allCompanies, rootSection);
   const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
-
-  const filteredCompanies = allCompanies.reduce((arr, company) => {
-    // console.log(arr);
+  const filteredCompanies = directoryCompanies.reduce((arr, company) => {
     if (getTaxonomyIds(company.taxonomy.edges).includes(2023082)) {
       return [
         ...arr,
