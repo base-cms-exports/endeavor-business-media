@@ -14,19 +14,19 @@ module.exports = async ({ apollo }) => {
   const companies = retrieveFilterdCompanies(allCompanies, rootSection);
 
   companies.sort((a, b) => a.name.localeCompare(b.name));
-  const formatAddress = (c, appendedStyleText) => {
-    const address = [];
-    let streetLoc = '';
-    if (c.address1) streetLoc += `<ParaStyle:DirCoAddress${appendedStyleText}>${c.address1}`;
-    if (c.address2) streetLoc += `${c.address2}`;
-    if (streetLoc !== '') address.push(streetLoc);
-    let cityStateZip = '';
-    if (c.city) cityStateZip += `<ParaStyle:DirCoAddress${appendedStyleText}>${c.city}`;
-    if (c.state) cityStateZip += `, ${c.state}`;
-    if (c.postalCode) cityStateZip += `, ${c.postalCode}`;
-    if (c.country) cityStateZip += ` ${c.country}`;
-    if (cityStateZip !== '') address.push(cityStateZip);
-    return address;
+
+  const getFormatedInfo = (c, appendedStyleText) => {
+    let info = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
+    if (c.address1) info = `${info.trim()}${c.address1}`;
+    if (c.address2) info = `${info.trim()} ${c.address2}`;
+    if (c.city) info = `${info.trim()} ${c.city}`;
+    if (c.state) info = `${info.trim()} ${c.state}`;
+    if (c.postalCode) info = `${info.trim()} ${c.postalCode}`;
+    if (c.country) info = `${info.trim()} ${c.country}`;
+    if (c.phone) info = `${info.trim()} TEL: ${c.phone}`;
+    if (c.fax) info = `${info.trim()} Fax: ${c.fax}`;
+    if (c.website) info = ` ${info.trim()} ${c.website.replace('https://', '').replace('http://', '')}`;
+    return info.trim();
   };
 
   const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
@@ -51,10 +51,9 @@ module.exports = async ({ apollo }) => {
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
     }
     text.push(`<ParaStyle:DirCoName${appendedStyleText}>${c.name}`);
-    const address = formatAddress(c, appendedStyleText);
-    if (address.length > 0) address.forEach(companyAddress => text.push(companyAddress));
-    if (c.phone) text.push(`<ParaStyle:DirCoPhone${appendedStyleText}>PH: ${c.phone}`);
-    if (c.website) text.push(`<ParaStyle:DirCoWebsite${appendedStyleText}>${c.website.replace('https://', '').replace('http://', '')}`);
+    const info = getFormatedInfo(c, appendedStyleText);
+    if (info) text.push(info);
+    
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     return text.join('\n');
   });
