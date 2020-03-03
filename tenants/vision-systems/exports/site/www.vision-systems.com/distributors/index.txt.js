@@ -69,7 +69,7 @@ module.exports = async ({ apollo }) => {
   const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
   const filteredCompanies = directoryCompanies.reduce((arr, company) => {
     // console.log(arr);
-    if (getTaxonomyIds(company.taxonomy.edges).includes(2023081)) {
+    if (getTaxonomyIds(getAsArray(company, 'taxonomy.edges')).includes(2023081)) {
       return [
         ...arr,
         company,
