@@ -16,15 +16,16 @@ module.exports = async ({ apollo }) => {
   companies.sort((a, b) => a.name.localeCompare(b.name));
 
   const getFormatedInfo = (c, appendedStyleText) => {
+    // format: City, State, Country, Website
     let info = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
-    if (c.address1) info = `${info.trim()}${c.address1}`;
-    if (c.address2) info = `${info.trim()} ${c.address2}`;
-    if (c.city) info = `${info.trim()} ${c.city}`;
-    if (c.state) info = `${info.trim()} ${c.state}`;
-    if (c.postalCode) info = `${info.trim()} ${c.postalCode}`;
-    if (c.country) info = `${info.trim()} ${c.country}`;
-    if (c.phone) info = `${info.trim()} TEL: ${c.phone}`;
-    if (c.fax) info = `${info.trim()} Fax: ${c.fax}`;
+    // if (c.address1) info = `${info.trim()}${c.address1}`;
+    // if (c.address2) info = `${info.trim()} ${c.address2}`;
+    if (c.city) info = ` ${info.trim()} ${c.city},`;
+    if (c.state) info = ` ${info.trim()} ${c.state},`;
+    // if (c.postalCode) info = `${info.trim()} ${c.postalCode}`;
+    if (c.country) info = ` ${info.trim()} ${c.country},`;
+    // if (c.phone) info = `${info.trim()} TEL: ${c.phone}`;
+    // if (c.fax) info = `${info.trim()} Fax: ${c.fax}`;
     if (c.website) info = ` ${info.trim()} ${c.website.replace('https://', '').replace('http://', '')}`;
     return info.trim();
   };
@@ -53,7 +54,6 @@ module.exports = async ({ apollo }) => {
     text.push(`<ParaStyle:DirCoName${appendedStyleText}>${c.name}`);
     const info = getFormatedInfo(c, appendedStyleText);
     if (info) text.push(info);
-    
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     return text.join('\n');
   });
