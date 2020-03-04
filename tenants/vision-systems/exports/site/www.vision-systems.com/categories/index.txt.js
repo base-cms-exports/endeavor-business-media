@@ -105,13 +105,13 @@ module.exports = async ({ apollo }) => {
       appendedStyleText = `${appendedStyleText}Ad`;
     }
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
-    text.push(`<ParaStyle:CatCoName${appendedStyleText}>${c.name}`);
     if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
-      text.push(`<ParaStyle:${appendedStyleText}>${c.primaryImage.source.name}`);
+      text.push(`<ParaStyle:Cat${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
       if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     }
+    text.push(`<ParaStyle:CatCoName${appendedStyleText}>${c.name}`);
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     // let { country } = c;
     // if (country.toLowerCase() === 'united states') country = '';
