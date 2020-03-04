@@ -20,13 +20,25 @@ module.exports = async ({ apollo }) => {
     let info = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
     // if (c.address1) info = `${info.trim()}${c.address1}`;
     // if (c.address2) info = `${info.trim()} ${c.address2}`;
-    if (c.city) info = ` ${info.trim()} ${c.city},`;
-    if (c.state) info = ` ${info.trim()} ${c.state},`;
+    if (c.city) info = `${info.trim()} ${c.city}, `;
+    if (c.state) info = `${info.trim()} ${c.state}, `;
     // if (c.postalCode) info = `${info.trim()} ${c.postalCode}`;
-    if (c.country) info = ` ${info.trim()} ${c.country},`;
+    if (c.country) {
+      switch (c.country) {
+        case 'United States':
+          info = `${info.trim()} USA, `;
+          break;
+        case 'United Kingdom':
+          info = `${info.trim()} UK, `;
+          break;
+        default:
+          info = `${info.trim()} ${c.country}, `;
+          break;
+      }
+    }
     // if (c.phone) info = `${info.trim()} TEL: ${c.phone}`;
     // if (c.fax) info = `${info.trim()} Fax: ${c.fax}`;
-    if (c.website) info = ` ${info.trim()} ${c.website.replace('https://', '').replace('http://', '')}`;
+    if (c.website) info = `${info.trim()} ${c.website.replace('https://', '').replace('http://', '')}`;
     return info.trim();
   };
 
@@ -47,7 +59,7 @@ module.exports = async ({ apollo }) => {
     }
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
     if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
-      text.push(`<ParaStyle:${appendedStyleText}>${c.primaryImage.source.name}`);
+      text.push(`<ParaStyle:Dir${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
     }
