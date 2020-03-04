@@ -12,6 +12,7 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
       cursor
       node {
         id
+        published
         name
         type
         taxonomy {
