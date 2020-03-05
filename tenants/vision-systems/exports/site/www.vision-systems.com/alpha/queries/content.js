@@ -30,6 +30,7 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
           zip
           country
           phone
+          publicEmail
           website
         }
         primaryImage {
