@@ -4,6 +4,7 @@ const { downloadImages, zipItUp, uploadToS3 } = require('../utils/image-handler'
 const { retrieveCompanies } = require('../utils/retrieve-companies');
 const { retrieveRootSection } = require('../utils/retrieve-root-section');
 const { retrieveFilterdCompanies } = require('../utils/retrieve-filtered-companies');
+const { formatText } = require('../utils/format-text');
 
 const exportName = `export-${Date.now()}.zip`;
 const companyLogos = [];
@@ -20,10 +21,10 @@ module.exports = async ({ apollo }) => {
     const featured = (taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376));
     // format: City, State, Country, Website
     let info = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
-    if (c.address1 && featured) info = `${info.trim()}${c.address1}`;
-    if (c.address2 && featured) info = `, ${info.trim()}${c.address2}`;
+    if (c.address1 && featured) info = `${info.trim()}${c.address1} `;
+    if (c.address2 && featured) info = `, ${info.trim()}${c.address2} `;
     if (c.city) info = `${info.trim()}${c.city}, `;
-    if (c.state) info = `${info.trim()}${c.state}, `;
+    if (c.state) info = `${info.trim()} ${c.state}, `;
     if (c.postalCode && featured) info = `${info.trim()}${c.postalCode}`;
     if (c.country) {
       switch (c.country) {
@@ -42,7 +43,7 @@ module.exports = async ({ apollo }) => {
     if (c.fax && featured) info = `${info.trim()} Fax: ${c.fax}`;
     if (c.publicEmail && featured) info = `${info.trim()} ${c.publicEmail}`;
     if (c.website) info = `${info.trim()} ${c.website.replace('https://', '').replace('http://', '')}`;
-    return info.trim();
+    return formatText(info.trim());
   };
 
   const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
@@ -61,14 +62,16 @@ module.exports = async ({ apollo }) => {
       appendedStyleText = `${appendedStyleText}Ad`;
     }
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
+    if (taxonomyIds.includes(2024376)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
     if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Dir${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
     }
-    text.push(`<ParaStyle:DirCoName${appendedStyleText}>${c.name}`);
+    text.push(`<ParaStyle:DirCoName${appendedStyleText}>${formatText(c.name)}`);
     const info = getFormatedInfo(c, appendedStyleText, taxonomyIds);
     if (info) text.push(info);
+    if ((taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376)) && c.teaser) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${c.bodyMagazine}`);
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     return text.join('\n');
   });
