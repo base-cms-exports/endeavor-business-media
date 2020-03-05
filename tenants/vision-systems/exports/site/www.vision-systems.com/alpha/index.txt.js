@@ -24,13 +24,11 @@ module.exports = async ({ apollo }) => {
     let info = paraStyle;
     if (c.address1 && featured) info = `${info.trim()}${c.address1}`;
     if (c.address2 && featured) info = `${info.trim()}, ${c.address2}`;
-    if (c.city && info !== paraStyle) {
-      info = `${info}, ${c.city}`;
-    } else if (c.city) {
-      info = `${info}${c.city}, `;
+    if (c.cityStateZip && info !== paraStyle) {
+      info = `${info}, ${c.cityStateZip}, `;
+    } else if (c.cityStateZip) {
+      info = `${info}${c.cityStateZip}, `;
     }
-    if (c.state) info = `${info.trim()} ${c.state}, `;
-    if (c.postalCode && featured) info = `${info.trim()}${c.postalCode}`;
     if (c.country) {
       switch (c.country) {
         case 'United States':
@@ -67,7 +65,6 @@ module.exports = async ({ apollo }) => {
       appendedStyleText = `${appendedStyleText}Ad`;
     }
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
-    if (taxonomyIds.includes(2024376)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
     if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Dir${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
@@ -76,7 +73,8 @@ module.exports = async ({ apollo }) => {
     text.push(`<ParaStyle:DirCoName${appendedStyleText}>${formatText(c.name)}`);
     const info = getFormatedInfo(c, appendedStyleText, taxonomyIds);
     if (info) text.push(info);
-    if ((taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376)) && c.teaser) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${c.bodyMagazine}`);
+    if (taxonomyIds.includes(2024376)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
+    if ((taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376)) && c.teaser) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${c.teaser}`);
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     return text.join('\n');
   });
