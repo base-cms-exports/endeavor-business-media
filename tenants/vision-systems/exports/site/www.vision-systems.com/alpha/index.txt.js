@@ -42,11 +42,11 @@ module.exports = async ({ apollo }) => {
           break;
       }
     }
-    if (c.phone && featured) info = `${info.trim()} TEL: ${c.phone}`;
-    if (c.fax && featured) info = `${info.trim()} Fax: ${c.fax}`;
-    if (c.publicEmail && featured) info = `${info.trim()} ${c.publicEmail}`;
+    if (c.phone && featured) info = `${info.trim()} TEL: ${c.phone}, `;
+    if (c.fax && featured) info = `${info.trim()} Fax: ${c.fax}, `;
+    if (c.publicEmail && featured) info = `${info.trim()} ${c.publicEmail}, `;
     if (c.website) info = `${info.trim()} ${c.website.replace('https://', '').replace('http://', '')}`;
-    return formatText(info.trim());
+    return formatText(info.trim().trim(','));
   };
 
   const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
