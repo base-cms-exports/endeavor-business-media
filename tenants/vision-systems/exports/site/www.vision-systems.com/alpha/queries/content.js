@@ -15,6 +15,7 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         published
         name
         type
+        body(input: { mutation: Magazine })
         taxonomy {
           edges {
             node {

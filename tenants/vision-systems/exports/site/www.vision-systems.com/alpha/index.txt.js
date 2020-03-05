@@ -74,7 +74,7 @@ module.exports = async ({ apollo }) => {
     const info = getFormatedInfo(c, appendedStyleText, taxonomyIds);
     if (info) text.push(info);
     if (taxonomyIds.includes(2024376)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
-    if ((taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376)) && c.teaser) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${c.teaser}`);
+    if ((taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376)) && c.body) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${c.body}`);
     // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     return text.join('\n');
   });
