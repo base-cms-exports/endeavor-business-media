@@ -1,3 +1,8 @@
+const replaceCharacter = (t, from, to) => {
+  let text = t.replace(from, to);
+  if (text.includes(from)) text = replaceCharacter(text, from, to);
+  return text;
+};
 const formatText = (t) => {
   if (t === null) {
     return null;
@@ -33,7 +38,7 @@ const formatText = (t) => {
   // eslint-disable-next-line no-useless-escape
   trans.push({ from: '&gt;', to: '\>' });
   trans.forEach((tran) => {
-    text = text.replace(tran.from, tran.to);
+    if (text.includes(tran.from)) text = replaceCharacter(text, tran.from, tran.to);
   });
 
   return text.trim();
