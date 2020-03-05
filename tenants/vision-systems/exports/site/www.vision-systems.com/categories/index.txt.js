@@ -105,7 +105,7 @@ module.exports = async ({ apollo }) => {
     if (taxonomyIds.includes(2024376)) {
       appendedStyleText = `${appendedStyleText}Ad`;
     }
-    if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
+    // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
     if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Cat${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
@@ -113,7 +113,7 @@ module.exports = async ({ apollo }) => {
       if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     }
     text.push(`<ParaStyle:CatCoName${appendedStyleText}>${formatText(c.name)}`);
-    if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
+    // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     // let { country } = c;
     // if (country.toLowerCase() === 'united states') country = '';
     // if (country.toLowerCase() !== 'united kingdom') country = 'UK';

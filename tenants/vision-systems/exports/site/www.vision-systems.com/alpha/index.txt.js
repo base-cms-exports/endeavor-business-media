@@ -44,7 +44,7 @@ module.exports = async ({ apollo }) => {
     }
     if (c.phone && featured) info = `${info.trim()} TEL: ${c.phone}, `;
     if (c.fax && featured) info = `${info.trim()} Fax: ${c.fax}, `;
-    if (c.publicEmail && featured) info = `${info.trim()} ${c.publicEmail}, `;
+    if (c.email && featured) info = `${info.trim()} ${c.email}, `;
     if (c.website) info = `${info.trim()} ${c.website.replace('https://', '').replace('http://', '')}`;
     return formatText(info.trim().trim(','));
   };
@@ -64,7 +64,7 @@ module.exports = async ({ apollo }) => {
     if (taxonomyIds.includes(2024376)) {
       appendedStyleText = `${appendedStyleText}Ad`;
     }
-    if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
+    // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
     if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Dir${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
@@ -75,7 +75,7 @@ module.exports = async ({ apollo }) => {
     if (info) text.push(info);
     if (taxonomyIds.includes(2024376)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
     if ((taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376)) && c.teaser) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${c.teaser}`);
-    if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
+    // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     return text.join('\n');
   });
 

@@ -24,7 +24,7 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         }
         ... on ContentCompany {
           phone
-          publicEmail
+          email
           website
         }
         ... on Addressable {
