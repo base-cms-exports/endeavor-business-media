@@ -20,10 +20,15 @@ module.exports = async ({ apollo }) => {
   // format: City, State, Country, Website) => {
     const featured = (taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376));
     // format: City, State, Country, Website
-    let info = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
-    if (c.address1 && featured) info = `${info.trim()}${c.address1} `;
-    if (c.address2 && featured) info = `, ${info.trim()}${c.address2} `;
-    if (c.city) info = `${info.trim()}${c.city}, `;
+    const paraStyle = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
+    let info = paraStyle;
+    if (c.address1 && featured) info = `${info.trim()}${c.address1}`;
+    if (c.address2 && featured) info = `${info.trim()}, ${c.address2}`;
+    if (c.city && info !== paraStyle) {
+      info = `${info}, ${c.city}`;
+    } else if (c.city) {
+      info = `${info}${c.city}, `;
+    }
     if (c.state) info = `${info.trim()} ${c.state}, `;
     if (c.postalCode && featured) info = `${info.trim()}${c.postalCode}`;
     if (c.country) {
