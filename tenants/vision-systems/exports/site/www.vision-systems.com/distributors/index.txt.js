@@ -6,6 +6,7 @@ const allPublishedContentQuery = require('./queries/content');
 const { retrieveRootSection } = require('../utils/retrieve-root-section');
 const { retrieveCompanies } = require('../utils/retrieve-companies');
 const { retrieveFilterdCompanies } = require('../utils/retrieve-filtered-companies');
+const { formatText } = require('../utils/format-text');
 
 const countryCodes = {
   'Cote D Ivoire': 'CI',
@@ -141,7 +142,7 @@ module.exports = async ({ apollo }) => {
     text.push(`<ParaStyle:CountrySubHead>${c.name}`);
     if (c.companies) {
       c.companies.forEach((comp) => {
-        text.push(`<ParaStyle:CountryCoName>${comp.name}`);
+        text.push(`<ParaStyle:CountryCoName>${formatText(comp.name)}`);
       });
     }
     if (c.name === 'United States of America') {
@@ -149,7 +150,7 @@ module.exports = async ({ apollo }) => {
         text.push(`<ParaStyle:StateSubhead>${state.name}`);
         if (state.companies) {
           state.companies.forEach((comp) => {
-            text.push(`<ParaStyle:CountryCoName>${comp.name}`);
+            text.push(`<ParaStyle:CountryCoName>${formatText(comp.name)}`);
           });
         }
       });

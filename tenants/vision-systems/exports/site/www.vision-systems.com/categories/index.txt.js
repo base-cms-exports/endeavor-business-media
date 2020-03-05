@@ -4,6 +4,7 @@ const paginateQuery = require('@endeavor-business-media/common/paginate-query');
 const allPublishedContentQuery = require('./queries/content');
 const websiteSectionsQuery = require('./queries/sections');
 const { downloadImages, zipItUp, uploadToS3 } = require('../utils/image-handler');
+const { formatText } = require('../utils/format-text');
 
 const exportName = `export-${Date.now()}.zip`;
 const companyLogos = [];
@@ -111,7 +112,7 @@ module.exports = async ({ apollo }) => {
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
       if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     }
-    text.push(`<ParaStyle:CatCoName${appendedStyleText}>${c.name}`);
+    text.push(`<ParaStyle:CatCoName${appendedStyleText}>${formatText(c.name)}`);
     if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     // let { country } = c;
     // if (country.toLowerCase() === 'united states') country = '';
