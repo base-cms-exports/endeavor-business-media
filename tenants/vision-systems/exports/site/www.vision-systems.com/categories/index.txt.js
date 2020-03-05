@@ -98,14 +98,9 @@ module.exports = async ({ apollo }) => {
     const taxonomyIds = getTaxonomyIds(c.taxonomy.edges);
     let appendedStyleText = '';
     // if the Directory Export: Logo Bin is set
-    if (taxonomyIds.includes(2024375)) {
-      appendedStyleText = `${appendedStyleText}Logo`;
-    }
+    if (taxonomyIds.includes(2024375)) appendedStyleText = `${appendedStyleText}Logo`;
     // if the Directory Export: Ad Bin is set
-    if (taxonomyIds.includes(2024376)) {
-      appendedStyleText = `${appendedStyleText}Ad`;
-    }
-    // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
+    if (taxonomyIds.includes(2024376)) appendedStyleText = `${appendedStyleText}Ad`;
     if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Cat${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
@@ -113,11 +108,7 @@ module.exports = async ({ apollo }) => {
       if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     }
     text.push(`<ParaStyle:CatCoName${appendedStyleText}>${formatText(c.name)}`);
-    // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
-    // let { country } = c;
-    // if (country.toLowerCase() === 'united states') country = '';
-    // if (country.toLowerCase() !== 'united kingdom') country = 'UK';
-    // text.push(`<ParaStyle:CatCoAddress>${c.city}, ${country}; ${c.website}`);
+    if (taxonomyIds.includes(2024376)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
     return text.join('\n');
   });
 
