@@ -23,12 +23,19 @@ module.exports = async ({ apollo }) => {
     const paraStyle = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
     let info = paraStyle;
     if (featured) {
-      if (c.address1) info = `${info.trim()}${c.address1}`;
-      if (c.address2) info = `${info.trim()}, ${c.address2}`;
+      if (c.address1) info = `${info}${c.address1}`;
+      if (c.address2) info = `${info}, ${c.address2}`;
       if (c.cityStateZip && info !== paraStyle) {
         info = `${info}, ${c.cityStateZip}, `;
       } else if (c.cityStateZip) {
         info = `${info}${c.cityStateZip}, `;
+      }
+    } else {
+      if (c.city) info = `${info}${c.city}`;
+      if (c.state) {
+        if (info !== paraStyle) {
+          info = `${info}, ${c.state}`;
+        } else info = `${info}${c.state}`;
       }
     }
     if (c.country) {
