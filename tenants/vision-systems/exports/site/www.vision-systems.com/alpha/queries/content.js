@@ -31,6 +31,8 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         ... on Addressable {
           address1
           address2
+          city
+          state
           cityStateZip
           country
         }
