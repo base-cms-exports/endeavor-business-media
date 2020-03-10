@@ -13,11 +13,11 @@ fragment WebsiteSectionHierarchyFragment on WebsiteSection {
     edges {
       node {
         ...WebsiteSectionFragment
-        children {
+        children(input: { pagination: { limit: 0 } }) {
           edges {
             node {
               ...WebsiteSectionFragment
-              children {
+              children(input: { pagination: { limit: 0 } }) {
                 edges {
                   node {
                     ...WebsiteSectionFragment
