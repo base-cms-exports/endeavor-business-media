@@ -22,12 +22,14 @@ module.exports = async ({ apollo }) => {
     // format: City, State, Country, Website
     const paraStyle = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
     let info = paraStyle;
-    if (c.address1 && featured) info = `${info.trim()}${c.address1}`;
-    if (c.address2 && featured) info = `${info.trim()}, ${c.address2}`;
-    if (c.cityStateZip && info !== paraStyle) {
-      info = `${info}, ${c.cityStateZip}, `;
-    } else if (c.cityStateZip) {
-      info = `${info}${c.cityStateZip}, `;
+    if (featured) {
+      if (c.address1) info = `${info.trim()}${c.address1}`;
+      if (c.address2) info = `${info.trim()}, ${c.address2}`;
+      if (c.cityStateZip && info !== paraStyle) {
+        info = `${info}, ${c.cityStateZip}, `;
+      } else if (c.cityStateZip) {
+        info = `${info}${c.cityStateZip}, `;
+      }
     }
     if (c.country) {
       switch (c.country) {
