@@ -66,5 +66,22 @@ services:
       - "19500:80"
       - "29500:29500"
 
+  aviationpros:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/aviationpros
+    environment:
+      <<: *env
+      <<: *env-picon
+      PORT: 80
+      EXPOSED_PORT: 19501
+      LIVERELOAD_PORT: 29501
+      TENANT_KEY: cygnus_cavc
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19501:80"
+      - "29501:29501"
+
 volumes:
   yarn-cache: {}
