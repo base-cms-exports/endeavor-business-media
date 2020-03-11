@@ -83,5 +83,22 @@ services:
       - "19501:80"
       - "29501:29501"
 
+  laserfocusworld:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/laserfocusworld
+    environment:
+      <<: *env
+      <<: *env-aerilon
+      PORT: 80
+      EXPOSED_PORT: 19502
+      LIVERELOAD_PORT: 29502
+      TENANT_KEY: ebm_lfw
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19502:80"
+      - "29502:29502"
+
 volumes:
   yarn-cache: {}
