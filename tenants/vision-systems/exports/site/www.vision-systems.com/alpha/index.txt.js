@@ -10,18 +10,23 @@ const exportName = `export-${Date.now()}.zip`;
 const companyLogos = [];
 
 module.exports = async ({ apollo }) => {
+  // This will return the direct decents of the /directory section.
   const rootSection = await retrieveRootSection(apollo, websiteSectionsQuery, 'directory');
+  // Get all companies scheduled to the site after Feb. 15 2018
+  // Date is set in retrieveCompanies function
   const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery);
+  // Filter companies to only ones scheduled to /directory or below
   const companies = retrieveFilterdCompanies(allCompanies, rootSection);
-
+  // Sort them alpha numerically
   companies.sort((a, b) => a.name.localeCompare(b.name));
 
   const getFormatedInfo = (c, appendedStyleText, taxonomyIds) => {
-  // format: City, State, Country, Website) => {
+  // Format: City, State, Country, Website) => {
     const featured = (taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376));
-    // format: City, State, Country, Website
+    // Format: City, State, Country, Website
     const paraStyle = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
     let info = paraStyle;
+    // If it is a logo or ad listing add address and zip info
     if (featured) {
       if (c.address1) info = `${info}${c.address1}`;
       if (c.address2) info = `${info}, ${c.address2}`;
@@ -30,6 +35,7 @@ module.exports = async ({ apollo }) => {
       } else if (c.cityStateZip) {
         info = `${info}${c.cityStateZip}, `;
       }
+    // Else just display city and stat if set
     } else {
       if (c.city) info = `${info}${c.city}`;
       if (c.state) {
@@ -38,6 +44,7 @@ module.exports = async ({ apollo }) => {
         } else info = `${info}${c.state}`;
       }
     }
+    // Display country and shorten United States & United Kingdom
     if (c.country) {
       switch (c.country) {
         case 'United States':
@@ -65,15 +72,15 @@ module.exports = async ({ apollo }) => {
     const text = [];
     const taxonomyIds = getTaxonomyIds(c.taxonomy.edges);
     let appendedStyleText = '';
-    // if the Directory Export: Logo Bin is set
+    // If the Directory Export: Logo Bin is set
     if (taxonomyIds.includes(2024375)) {
       appendedStyleText = `${appendedStyleText}Logo`;
     }
-    // if the Directory Export: Ad Bin is set
+    // If the Directory Export: Ad Bin is set
     if (taxonomyIds.includes(2024376)) {
       appendedStyleText = `${appendedStyleText}Ad`;
     }
-    // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
+    // Add Image if in Logo Bin
     if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Dir${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
@@ -84,7 +91,7 @@ module.exports = async ({ apollo }) => {
     if (info) text.push(info);
     if (taxonomyIds.includes(2024376)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
     if ((taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376)) && c.body) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${c.body}`);
-    // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
+
     return text.join('\n');
   });
 
