@@ -25,7 +25,7 @@ module.exports = async ({ apollo }) => {
   const gswSections = await retrieveSectionsByIds(apollo, websiteSectionsQuery, gswSectionIds);
   // This will return the section for Fueling
   const fuelSections = await retrieveSectionsByIds(apollo, websiteSectionsQuery, fuelingSectionIds);
-  // Get all companies scheduled to the site after Feb. 15 2018
+  // Get all companies scheduled to the site
   const companies = await retrieveCompanies(apollo, allPublishedContentQuery);
 
   // // Get the sections and map companies into them
@@ -40,7 +40,7 @@ module.exports = async ({ apollo }) => {
     return text.join('\n');
   });
 
-  // The big kahuna. Expands children and content into the accumulator (arr)
+  // The big kahuna. Loop over Sections and content into the accumulator (arr)
   const printSection = (arr, { name, content }) => [
     ...arr,
     // Only include categories if they have content
