@@ -34,8 +34,8 @@ module.exports = async ({ apollo }) => {
       if (c.city) info = `${info}${c.city}`;
       if (c.state) {
         if (info !== paraStyle) {
-          info = `${info}, ${c.state}`;
-        } else info = `${info}${c.state}`;
+          info = `${info}, ${c.state}, `;
+        } else info = `${info}${c.state}, `;
       }
     }
     if (c.country) {
