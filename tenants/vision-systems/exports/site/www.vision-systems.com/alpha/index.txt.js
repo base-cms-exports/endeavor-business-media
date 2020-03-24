@@ -37,10 +37,10 @@ module.exports = async ({ apollo }) => {
       }
     // Else just display city and stat if set
     } else {
-      if (c.city) info = `${info}${c.city}`;
+      if (c.city) info = `${info}${c.city}, `;
       if (c.state) {
         if (info !== paraStyle) {
-          info = `${info}, ${c.state}, `;
+          info = `${info}${c.state}, `;
         } else info = `${info}${c.state}, `;
       }
     }
