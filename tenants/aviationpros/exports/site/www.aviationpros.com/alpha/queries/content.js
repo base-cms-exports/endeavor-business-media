@@ -23,6 +23,8 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
           }
         }
         ... on ContentCompany {
+          phone
+          email
           city
           country
           website
