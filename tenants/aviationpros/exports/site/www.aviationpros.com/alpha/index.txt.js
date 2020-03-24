@@ -27,7 +27,7 @@ module.exports = async ({ apollo }) => {
     const taxonomyIds = [3124773, 3124774, 3124775, 3124776, 3124777, 3124778];
     const companyTaxonomyIds = getTaxonomyIds(c.taxonomy.edges);
     const insert = taxonomyIds.filter(element => companyTaxonomyIds.includes(element));
-    if (insert.length !== 0) return '';
+    if (insert.length === 0) return '';
     const text = [];
     if (companyTaxonomyIds.includes(3124775) && c.primaryImage) {
       text.push(`<ParaStyle:cLogo>${c.primaryImage.source.name}`);
