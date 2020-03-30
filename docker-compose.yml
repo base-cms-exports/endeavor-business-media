@@ -100,5 +100,22 @@ services:
       - "19502:80"
       - "29502:29502"
 
+  militaryaerospace:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/militaryaerospace
+    environment:
+      <<: *env
+      <<: *env-aerilon
+      PORT: 80
+      EXPOSED_PORT: 19503
+      LIVERELOAD_PORT: 29503
+      TENANT_KEY: ebm_mae
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19503:80"
+      - "29503:29503"
+
 volumes:
   yarn-cache: {}
