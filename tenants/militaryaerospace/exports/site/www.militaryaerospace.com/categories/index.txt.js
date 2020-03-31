@@ -78,17 +78,17 @@ module.exports = async ({ apollo }) => {
     const taxonomyIds = getTaxonomyIds(c.taxonomy.edges);
     let appendedStyleText = '';
     // if the Directory Export: Logo Bin is set
-    if (taxonomyIds.includes(2024375)) appendedStyleText = `${appendedStyleText}Logo`;
+    if (taxonomyIds.includes(2024455)) appendedStyleText = `${appendedStyleText}Logo`;
     // if the Directory Export: Ad Bin is set
-    if (taxonomyIds.includes(2024376)) appendedStyleText = `${appendedStyleText}Ad`;
-    if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
+    if (taxonomyIds.includes(2024454)) appendedStyleText = `${appendedStyleText}Ad`;
+    if (taxonomyIds.includes(2024455) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Cat${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
       if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     }
     text.push(`<ParaStyle:CatCoName${appendedStyleText}>${formatText(c.name)}`);
-    if (taxonomyIds.includes(2024376)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
+    if (taxonomyIds.includes(2024454)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
     return text.join('\n');
   });
 

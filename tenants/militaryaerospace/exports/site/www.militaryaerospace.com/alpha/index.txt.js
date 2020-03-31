@@ -22,7 +22,7 @@ module.exports = async ({ apollo }) => {
 
   const getFormatedInfo = (c, appendedStyleText, taxonomyIds) => {
   // Format: City, State, Country, Website) => {
-    const featured = (taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376));
+    const featured = (taxonomyIds.includes(2024455) || taxonomyIds.includes(2024454));
     // Format: City, State, Country, Website
     const paraStyle = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
     let info = paraStyle;
@@ -73,15 +73,15 @@ module.exports = async ({ apollo }) => {
     const taxonomyIds = getTaxonomyIds(c.taxonomy.edges);
     let appendedStyleText = '';
     // If the Directory Export: Logo Bin is set
-    if (taxonomyIds.includes(2024375)) {
+    if (taxonomyIds.includes(2024455)) {
       appendedStyleText = `${appendedStyleText}Logo`;
     }
     // If the Directory Export: Ad Bin is set
-    if (taxonomyIds.includes(2024376)) {
+    if (taxonomyIds.includes(2024454)) {
       appendedStyleText = `${appendedStyleText}Ad`;
     }
     // Add Image if in Logo Bin
-    if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
+    if (taxonomyIds.includes(2024455) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Dir${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
@@ -89,8 +89,8 @@ module.exports = async ({ apollo }) => {
     text.push(`<ParaStyle:DirCoName${appendedStyleText}>${formatText(c.name)}`);
     const info = getFormatedInfo(c, appendedStyleText, taxonomyIds);
     if (info) text.push(info);
-    if (taxonomyIds.includes(2024376)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
-    if ((taxonomyIds.includes(2024375) || taxonomyIds.includes(2024376)) && c.body) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${c.body}`);
+    if (taxonomyIds.includes(2024454)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
+    if ((taxonomyIds.includes(2024455) || taxonomyIds.includes(2024454)) && c.body) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${c.body}`);
 
     return text.join('\n');
   });
