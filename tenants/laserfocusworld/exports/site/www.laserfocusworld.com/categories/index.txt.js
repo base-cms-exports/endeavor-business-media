@@ -28,8 +28,14 @@ const mapHierarchy = (sections, companies) => sections.reduce((arr, section) => 
 module.exports = async ({ apollo }) => {
   // This will return the direct decents of the /directory section.
   const rootSection = await retrieveRootSection(apollo, websiteSectionsQuery, 'directory');
-  const sections = getAsArray(rootSection, 'children.edges').map(({ node }) => node);
-  // Get all companies scheduled to the site after Feb. 15 2018
+  const fatherSections = getAsArray(rootSection, 'children.edges').map(({ node }) => node);
+  const sections = [];
+  fatherSections.forEach((s) => {
+    const tempSection = getAsArray(s, 'children.edges').map(({ node }) => node);
+    sections.push(...tempSection);
+  });
+  // const sections = getAsArray(rootSection, 'children.edges').map(({ node }) => node);
+
   // Date is set in retrieveCompanies function
   const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery);
   // Filter companies to only ones scheduled to /directory or below
@@ -52,7 +58,8 @@ module.exports = async ({ apollo }) => {
     if (taxonomyIds.includes(2024381) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Cat${appendedStyleText}>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
-      if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);    }
+      if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
+    }
     text.push(`<ParaStyle:CatCoName${appendedStyleText}>${formatText(c.name)}`);
     if (taxonomyIds.includes(2024382)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
     return text.join('\n');
@@ -63,7 +70,7 @@ module.exports = async ({ apollo }) => {
     ...arr,
     // Only include categories if they have content or children
     ...(content.length || children.length ? [
-      `<ParaStyle:Catsubhead${children.length ? 1 : 2}>${name}`,
+      `<ParaStyle:Catsubhead>${name}`,
       ...printContent(content),
       ...children.reduce(printSection, []),
     ] : []),
