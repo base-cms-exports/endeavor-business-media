@@ -90,7 +90,7 @@ module.exports = async ({ apollo }) => {
     const info = getFormatedInfo(c, appendedStyleText, taxonomyIds);
     if (info) text.push(info);
     if (taxonomyIds.includes(2024454)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
-    if ((taxonomyIds.includes(2024455) || taxonomyIds.includes(2024454)) && c.body) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${c.body}`);
+    if ((taxonomyIds.includes(2024455) || taxonomyIds.includes(2024454)) && c.body) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${formatText(c.body.replace(/(<([^>]+)>)/ig, ''))}`);
 
     return text.join('\n');
   });

@@ -9,6 +9,8 @@ const formatText = (t) => {
   }
   let text = t;
   const trans = [];
+  trans.push({ from: '&nbsp;', to: ' ' });
+  trans.push({ from: '  ', to: ' ' });
   trans.push({ from: 'ä', to: '<0x00E4>' });
   trans.push({ from: 'è', to: '<0x00E8>' });
   trans.push({ from: 'é', to: '<0x00E9>' });
@@ -21,8 +23,11 @@ const formatText = (t) => {
   trans.push({ from: '&frac12;', to: '<0x00BD>' });
   trans.push({ from: '&frac34;', to: '<0x00BE>' });
   trans.push({ from: '&lsquo;', to: '<0x2018>' });
+  trans.push({ from: '’', to: '<0x2019>' });
   trans.push({ from: '&rsquo;', to: '<0x2019>' });
+  trans.push({ from: '“', to: '<0x201C>' });
   trans.push({ from: '&ldquo;', to: '<0x201C>' });
+  trans.push({ from: '”', to: '<0x201D>' });
   trans.push({ from: '&rdquo;', to: '<0x201D>' });
   trans.push({ from: '&bull;', to: '<0x2022>' });
   trans.push({ from: '|0x2022|', to: '<0x2022>' });
@@ -30,6 +35,7 @@ const formatText = (t) => {
   trans.push({ from: '&mdash;', to: '<0x2014>' });
   trans.push({ from: '&trade;', to: '<0x2122>' });
   trans.push({ from: '&copy;', to: '<0x00A9>' });
+  trans.push({ from: '®', to: '<0x00AE>' });
   trans.push({ from: '&reg;', to: '<0x00AE>' });
   trans.push({ from: '&deg;', to: '<0x00B0>' });
   trans.push({ from: '\\', to: '\\\\' });
