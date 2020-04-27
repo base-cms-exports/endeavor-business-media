@@ -15,6 +15,7 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         published
         name
         type
+        body
         taxonomy {
           edges {
             node {
@@ -24,10 +25,15 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         }
         ... on ContentCompany {
           phone
+          fax
           email
-          city
-          country
           website
+        }
+        ... on Addressable {
+          address1
+          address2
+          cityStateZip
+          country
         }
         primaryImage {
           id

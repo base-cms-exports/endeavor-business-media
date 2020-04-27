@@ -32,15 +32,18 @@ module.exports = async ({ apollo }) => {
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
     }
-    if (companyTaxonomyIds.includes(3124777) || companyTaxonomyIds.includes(3124778)) {
-      text.push(`<ParaStyle:cDescription>${formatText(c.body)}`);
-    }
+
     text.push(`<ParaStyle:cName>${formatText(c.name)}`);
+    if (c.address1) text.push(`<ParaStyle:cAddress>${c.address1}`);
+    if (c.address2) text.push(`<ParaStyle:cAddress>${c.address2}`);
     if (c.cityStateZip) text.push(`<ParaStyle:cAddress>${c.cityStateZip} ${c.country}`);
     if (c.phone) text.push(`<ParaStyle:cPhone>${c.phone}`);
-    // text.push(`<ParaStyle:cAddress>${c.fax}`);
-    if (c.email) text.push(`<ParaStyle:cEmail>${c.email}`);
+    if (c.fax) text.push(`<ParaStyle:cFax>${c.fax}`);
     if (c.website) text.push(`<ParaStyle:cWebsite>${c.website}`);
+    if (c.email) text.push(`<ParaStyle:cEmail>${c.email}`);
+    if (c.body && (companyTaxonomyIds.includes(3124777) || companyTaxonomyIds.includes(3124778))) {
+      text.push(`<ParaStyle:cDescription>${formatText(c.body.replace(/(<([^>]+)>)/ig, ''))}`);
+    }
 
     return text.join('\n');
   });
@@ -49,7 +52,7 @@ module.exports = async ({ apollo }) => {
     '<ASCII-MAC>', // @todo detect and/or make query a param
     ...printContent(companies),
   ];
-
+  const cleanLines = lines.filter(e => e);
   if (companyLogos.length !== 0) {
     const tmpDir = `${__dirname}/tmp`;
     // Tempararly download all logs for zipping up.
@@ -63,5 +66,5 @@ module.exports = async ({ apollo }) => {
   }
 
   // @todo port special character filter from php
-  return lines.join('\n');
+  return cleanLines.join('\n');
 };
