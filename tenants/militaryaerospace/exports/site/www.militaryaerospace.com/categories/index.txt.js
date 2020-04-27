@@ -62,15 +62,19 @@ module.exports = async ({ apollo }) => {
   const rootSection = await retrieveRootSection(apollo, websiteSectionsQuery, 'directory');
   const sections = getAsArray(rootSection, 'children.edges').map(({ node }) => node);
   // Get all companies scheduled to the site after Feb. 15 2018
+  const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
   // Date is set in retrieveCompanies function
   const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery);
+  // filter out “Bin: legacyStatus:inactive” or “Bin: legacyState:notApproved”
+  const excludedNonActiveCompanies = allCompanies.filter(({ taxonomy }) => {
+    const taxonomyIds = getTaxonomyIds(taxonomy.edges);
+    return !taxonomyIds.includes(2022912) && !taxonomyIds.includes(2022915);
+  });
   // Filter companies to only ones scheduled to /directory or below
-  const companies = retrieveFilterdCompanies(allCompanies, rootSection);
+  const companies = retrieveFilterdCompanies(excludedNonActiveCompanies, rootSection);
 
   // Get the top-level sections and map companies into them
   const segments = await mapHierarchy(sections, companies);
-
-  const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
 
   // Wrap content in paragraph style
   const printContent = arr => arr.map((c) => {

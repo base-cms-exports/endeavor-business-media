@@ -13,10 +13,17 @@ module.exports = async ({ apollo }) => {
   // This will return the direct decents of the /directory section.
   const rootSection = await retrieveRootSection(apollo, websiteSectionsQuery, 'directory');
   // Get all companies scheduled to the site after Feb. 15 2018
+  const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
+
   // Date is set in retrieveCompanies function
   const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery);
+  // filter out “Bin: legacyStatus:inactive” or “Bin: legacyState:notApproved”
+  const excludedNonActiveCompanies = allCompanies.filter(({ taxonomy }) => {
+    const taxonomyIds = getTaxonomyIds(taxonomy.edges);
+    return !taxonomyIds.includes(2022912) && !taxonomyIds.includes(2022915);
+  });
   // Filter companies to only ones scheduled to /directory or below
-  const companies = retrieveFilterdCompanies(allCompanies, rootSection);
+  const companies = retrieveFilterdCompanies(excludedNonActiveCompanies, rootSection);
   // Sort them alpha numerically
   companies.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -64,8 +71,6 @@ module.exports = async ({ apollo }) => {
     if (c.website) info = `${info.trim()} ${c.website.replace('https://', '').replace('http://', '')}`;
     return formatText(info.trim().trim(','));
   };
-
-  const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
 
   // Wrap content in paragraph style
   const printContent = arr => arr.map((c) => {
