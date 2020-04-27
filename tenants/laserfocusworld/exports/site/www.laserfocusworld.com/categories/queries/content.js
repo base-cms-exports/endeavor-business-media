@@ -23,9 +23,13 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
           }
         }
         ... on ContentCompany {
-          city
-          country
+          email
           website
+        }
+        ... on Addressable {
+          city
+          state
+          country
         }
         primaryImage {
           id

@@ -21,6 +21,9 @@ fragment WebsiteSectionHierarchyFragment on WebsiteSection {
                 edges {
                   node {
                     ...WebsiteSectionFragment
+                    parent {
+                      ...WebsiteSectionFragment
+                    }
                   }
                 }
               }

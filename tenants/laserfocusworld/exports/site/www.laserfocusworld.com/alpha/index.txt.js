@@ -12,53 +12,40 @@ const companyLogos = [];
 module.exports = async ({ apollo }) => {
   const rootSection = await retrieveRootSection(apollo, websiteSectionsQuery, 'directory');
   const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery);
-  const companies = retrieveFilterdCompanies(allCompanies, rootSection);
+
+  const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
+
+  // filter out “Bin: legacyStatus:inactive” or “Bin: legacyState:notApproved”
+  const excludedNonActiveCompanies = allCompanies.filter(({ taxonomy }) => {
+    const taxonomyIds = getTaxonomyIds(taxonomy.edges);
+    return !taxonomyIds.includes(2023946) && !taxonomyIds.includes(2023952);
+  });
+  const companies = retrieveFilterdCompanies(excludedNonActiveCompanies, rootSection);
 
   companies.sort((a, b) => a.name.localeCompare(b.name));
 
-  const getFormatedInfo = (c, appendedStyleText, taxonomyIds) => {
-  // format: City, State, Country, Website) => {
-    const featured = (taxonomyIds.includes(2024381) || taxonomyIds.includes(2024382));
-    // format: City, State, Country, Website
+  const getFormatedInfo = (c, appendedStyleText) => {
     const paraStyle = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
     let info = paraStyle;
-    if (featured) {
-      if (c.address1) info = `${info}${c.address1}`;
-      if (c.address2) info = `${info}, ${c.address2}`;
-      if (c.cityStateZip && info !== paraStyle) {
-        info = `${info}, ${c.cityStateZip}, `;
-      } else if (c.cityStateZip) {
-        info = `${info}${c.cityStateZip}, `;
-      }
-    } else {
-      if (c.city) info = `${info}${c.city}`;
-      if (c.state) {
-        if (info !== paraStyle) {
-          info = `${info}, ${c.state}, `;
-        } else info = `${info}${c.state}, `;
-      }
-    }
+    if (c.address1) info = `${info}${c.address1}`;
+    if (c.address2) info = `${info}, ${c.address2}`;
+    info = `${info}\n${paraStyle}>`;
+    info = `${info}${c.cityStateZip}, `;
     if (c.country) {
       switch (c.country) {
         case 'United States':
-          info = `${info.trim()} USA, `;
+          info = `${info.trim()} USA`;
           break;
         case 'United Kingdom':
-          info = `${info.trim()} UK, `;
+          info = `${info.trim()} UK`;
           break;
         default:
-          info = `${info.trim()} ${c.country}, `;
+          info = `${info.trim()} ${c.country}`;
           break;
       }
     }
-    if (c.phone && featured) info = `${info.trim()} TEL: ${c.phone}, `;
-    if (c.fax && featured) info = `${info.trim()} Fax: ${c.fax}, `;
-    if (c.email && featured) info = `${info.trim()} ${c.email}, `;
-    if (c.website) info = `${info.trim()} ${c.website.replace('https://', '').replace('http://', '')}`;
-    return formatText(info.trim().trim(','));
+    return formatText(info.trim().trim(',').trimEnd(', ').trimEnd(','));
   };
-
-  const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
 
   // Wrap content in paragraph style
   const printContent = arr => arr.map((c) => {
@@ -82,10 +69,13 @@ module.exports = async ({ apollo }) => {
     text.push(`<ParaStyle:DirCoName${appendedStyleText}>${formatText(c.name)}`);
     const info = getFormatedInfo(c, appendedStyleText, taxonomyIds);
     if (info) text.push(info);
+    if (c.phone) text.push(`<ParaStyle:DirCoAddress${appendedStyleText}>PH: ${c.phone}`);
+    if ((taxonomyIds.includes(2024381) || taxonomyIds.includes(2024382)) && c.email) text.push(`<ParaStyle:DirCoAddress${appendedStyleText}>${c.email}`);
+    if (c.website) text.push(`<ParaStyle:DirCoAddress${appendedStyleText}>${c.website.replace('https://', '').replace('http://', '')}`);
     if (taxonomyIds.includes(2024382)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
     if ((taxonomyIds.includes(2024381) || taxonomyIds.includes(2024382)) && c.body) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${c.body}`);
     // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
-    return text.join('\n');
+    return (text.length !== 0) ? text.join('\n') : '';
   });
 
   const lines = [
@@ -93,7 +83,7 @@ module.exports = async ({ apollo }) => {
     ...printContent(companies),
   ];
 
-
+  const cleanLines = lines.filter(e => e);
   if (companyLogos.length !== 0) {
     const tmpDir = `${__dirname}/tmp`;
     // Tempararly download all logs for zipping up.
@@ -107,5 +97,5 @@ module.exports = async ({ apollo }) => {
   }
 
   // @todo port special character filter from php
-  return lines.join('\n');
+  return cleanLines.join('\n');
 };
