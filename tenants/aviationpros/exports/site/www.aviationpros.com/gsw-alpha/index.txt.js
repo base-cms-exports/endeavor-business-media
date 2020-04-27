@@ -43,10 +43,10 @@ module.exports = async ({ apollo }) => {
     if (c.address1) text.push(`<ParaStyle:cAddress>${c.address1}`);
     if (c.address2) text.push(`<ParaStyle:cAddress>${c.address2}`);
     if (c.cityStateZip) text.push(`<ParaStyle:cAddress>${c.cityStateZip} ${c.country}`);
-    if (c.phone) text.push(`<ParaStyle:cPhone>${c.phone}`);
-    if (c.fax) text.push(`<ParaStyle:cFax>${c.fax}`);
-    if (c.website) text.push(`<ParaStyle:cWebsite>${c.website}`);
-    if (c.email) text.push(`<ParaStyle:cEmail>${c.email}`);
+    if (c.phone) text.push(`<ParaStyle:cPhone>Phone: ${c.phone}`);
+    if (c.fax) text.push(`<ParaStyle:cFax>Fax: ${c.fax}`);
+    if (c.website) text.push(`<ParaStyle:cWebsite>Websites: ${c.website}`);
+    if (c.email) text.push(`<ParaStyle:cEmail>eMail: ${c.email}`);
     if (c.body && (companyTaxonomyIds.includes(3124774) || companyTaxonomyIds.includes(3124777))) {
       text.push(`<ParaStyle:cDescription>${formatText(c.body.replace(/(<([^>]+)>)/ig, ''))}`);
     }
