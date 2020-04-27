@@ -15,6 +15,7 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         published
         name
         type
+        body(input: { mutation: Magazine })
         taxonomy {
           edges {
             node {
@@ -23,11 +24,23 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
           }
         }
         ... on ContentCompany {
+          phone
+          email
+          website
+        }
+        ... on Addressable {
+          address1
+          address2
+          city
           state
+          cityStateZip
           country
         }
         primaryImage {
           id
+          src
+          alt
+          isLogo
           source {
             name
           }
