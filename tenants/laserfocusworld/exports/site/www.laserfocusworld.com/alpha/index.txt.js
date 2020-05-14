@@ -27,10 +27,10 @@ module.exports = async ({ apollo }) => {
   const getFormatedInfo = (c, appendedStyleText) => {
     const paraStyle = `<ParaStyle:DirCoAddress${appendedStyleText}>`;
     let info = paraStyle;
-    if (c.address1) info = `${info}${c.address1}`;
-    if (c.address2) info = `${info}, ${c.address2}`;
-    info = `${info}\n${paraStyle}>`;
-    info = `${info}${c.cityStateZip}, `;
+    if (c.address1) info = `${info}${formatText(c.address1)}`;
+    if (c.address2) info = `${info}, ${formatText(c.address2)}`;
+    info = `${info}\n${paraStyle}`;
+    info = `${info}${formatText(c.cityStateZip)}, `;
     if (c.country) {
       switch (c.country) {
         case 'United States':
@@ -40,7 +40,7 @@ module.exports = async ({ apollo }) => {
           info = `${info.trim()} UK`;
           break;
         default:
-          info = `${info.trim()} ${c.country}`;
+          info = `${info.trim()} ${formatText(c.country)}`;
           break;
       }
     }

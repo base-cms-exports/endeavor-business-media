@@ -5,6 +5,7 @@ const { downloadImages, zipItUp, uploadToS3 } = require('../utils/image-handler'
 const { retrieveCompanies } = require('../utils/retrieve-companies');
 const { retrieveRootSection } = require('../utils/retrieve-root-section');
 const { retrieveFilterdCompanies } = require('../utils/retrieve-filtered-companies');
+const { formatText } = require('../utils/format-text');
 // const { formatText } = require('../utils/format-text');
 
 const exportName = `export-${Date.now()}.zip`;
@@ -65,11 +66,11 @@ module.exports = async ({ apollo }) => {
     }
     // text.push(`<ParaStyle:CatCoName${appendedStyleText}>${c.name}`);
     let info = '';
-    if (c.city) info = c.city;
+    if (c.city) info = formatText(c.city);
     if (c.state) {
       if (info !== '') {
-        info = `${info}, ${c.state}`;
-      } else info = c.state;
+        info = `${info}, ${formatText(c.state)}`;
+      } else info = formatText(c.state);
     }
     if (c.country) {
       switch (c.country) {
@@ -80,13 +81,13 @@ module.exports = async ({ apollo }) => {
           info = `${info.trim()}, UK`;
           break;
         default:
-          info = `${info.trim()}, ${c.country}`;
+          info = `${info.trim()}, ${formatText(c.country)}`;
           break;
       }
     }
     if (c.email && taxonomyIds.includes(2024382)) info = `${info.trim()}, ${c.email}, `;
     if (c.website && taxonomyIds.includes(2024382)) info = `${info.trim()}, ${c.website.replace('https://', '').replace('http://', '')}`;
-    text.push(`<ParaStyle:CatCoName${appendedStyleText}>${c.name}`);
+    text.push(`<ParaStyle:CatCoName${appendedStyleText}>${formatText(c.name)}`);
     text.push(`<ParaStyle:CatCoAddress${appendedStyleText}>${info.trimEnd(', ').trimEnd(',')}`);
     if (taxonomyIds.includes(2024382)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
     return (text.length !== 0) ? text.join('\n') : '';
