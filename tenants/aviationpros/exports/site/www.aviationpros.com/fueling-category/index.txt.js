@@ -28,9 +28,13 @@ module.exports = async ({ apollo }) => {
   // // Get the sections and map companies into them
   const fuelingSegments = await mapHierarchy(fuelSections, companies);
 
-
+  const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
   // Wrap content in paragraph style
   const printContent = arr => arr.map((c) => {
+    const taxonomyIds = [3124776, 3124777, 3124778];
+    const companyTaxonomyIds = getTaxonomyIds(c.taxonomy.edges);
+    const insert = taxonomyIds.filter(element => companyTaxonomyIds.includes(element));
+    if (insert.length === 0) return '';
     const text = [];
     text.push(`<ParaStyle:cName>${formatText(c.name)}`);
     return text.join('\n');
@@ -50,7 +54,7 @@ module.exports = async ({ apollo }) => {
     '<ASCII-MAC>', // @todo detect and/or make query a param
     ...fuelingSegments.reduce(printSection, []),
   ];
-
+  const cleanLines = lines.filter(e => e);
   if (companyLogos.length !== 0) {
     const tmpDir = `${__dirname}/tmp`;
     // Tempararly download all logs for zipping up.
@@ -63,5 +67,5 @@ module.exports = async ({ apollo }) => {
     lines.push(`<ParaStyel:LogoDownloadPath>https://base-cms-exports.s3.amazonaws.com/exports/${exportName}`);
   }
   // @todo port special character filter from php
-  return lines.join('\n');
+  return cleanLines.join('\n');
 };

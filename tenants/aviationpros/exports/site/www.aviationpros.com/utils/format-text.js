@@ -7,15 +7,29 @@ const formatText = (t) => {
   if (t === null) {
     return null;
   }
+  // https://www.compart.com/en/unicode/U+00E3
   let text = t;
   const trans = [];
   trans.push({ from: '&nbsp;', to: ' ' });
   trans.push({ from: '  ', to: ' ' });
+  trans.push({ from: '  ,  ', to: ', ' });
+  trans.push({ from: ' , ', to: ', ' });
   trans.push({ from: 'ä', to: '<0x00E4>' });
+  trans.push({ from: 'â', to: '<0x00E2>' });
+  trans.push({ from: 'ã', to: '<0x00E3>' });
+  trans.push({ from: 'ß', to: '<0x00DF>' });
+  trans.push({ from: 'ç', to: '<0x00E7>' });
   trans.push({ from: 'è', to: '<0x00E8>' });
   trans.push({ from: 'é', to: '<0x00E9>' });
-  trans.push({ from: 'ü', to: '<0x00FC>' });
+  trans.push({ from: 'ï', to: '<0x00EF>' });
+  trans.push({ from: 'í', to: '<0x00ED>' });
   trans.push({ from: 'É', to: '<0x00C9>' });
+  trans.push({ from: 'ñ', to: '<0x00F1>' });
+  trans.push({ from: 'ó', to: '<0x00F3>' });
+  trans.push({ from: 'ö', to: '<0x00F6>' });
+  trans.push({ from: 'ú', to: '<0x00FA>' });
+  trans.push({ from: 'ü', to: '<0x00FC>' });
+  trans.push({ from: 'Ü', to: '<0x00DC>' });
   trans.push({ from: '&#39;', to: "'" });
   trans.push({ from: '&quot', to: '"' });
   trans.push({ from: '&hellip;', to: '<0x2026>' });
