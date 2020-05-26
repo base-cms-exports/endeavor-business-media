@@ -117,5 +117,22 @@ services:
       - "19503:80"
       - "29503:29503"
 
+  rermag:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/rermag
+    environment:
+      <<: *env
+      <<: *env-gemenon
+      PORT: 80
+      EXPOSED_PORT: 19504
+      LIVERELOAD_PORT: 29504
+      TENANT_KEY: ebm_rermag
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19504:80"
+      - "29504:29504"
+
 volumes:
   yarn-cache: {}
