@@ -51,7 +51,11 @@ module.exports = async ({ apollo }) => {
     if (c.fax) text.push(`<ParaStyle:cPhoneNumbers>Fax: ${c.fax}`);
     if (c.website) text.push(`<ParaStyle:cWebsite>${c.website}`);
     if (c.email) text.push(`<ParaStyle:cEmail>${c.email}`);
-    if (c.body && (companyTaxonomyIds.includes(3124774) || companyTaxonomyIds.includes(3124777))) {
+    if (c.body
+      && (companyTaxonomyIds.includes(3124774)
+      || companyTaxonomyIds.includes(3124777)
+      || companyTaxonomyIds.includes(3124775)
+      || companyTaxonomyIds.includes(3124778))) {
       text.push(`<ParaStyle:cDescription>${formatText(c.body.replace(/(<([^>]+)>)/ig, ''))}`);
     }
 
