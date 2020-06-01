@@ -83,7 +83,7 @@ module.exports = async ({ apollo }) => {
     // Add Image if in Logo Bin
     if (taxonomyIds.includes(2024375) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Dir${appendedStyleText}>${c.primaryImage.source.name}`);
-      const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
+      const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
     }
     text.push(`<ParaStyle:DirCoName${appendedStyleText}>${formatText(c.name)}`);

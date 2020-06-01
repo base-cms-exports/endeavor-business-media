@@ -34,7 +34,7 @@ module.exports = async ({ apollo }) => {
       && c.primaryImage
     ) {
       text.push(`<ParaStyle:cLogo>${c.primaryImage.source.name}`);
-      const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
+      const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
       // text.push(`<ParaStyle:cDescription>${formatText(c.teaser)}`);
     }
@@ -47,7 +47,7 @@ module.exports = async ({ apollo }) => {
     } else if (c.cityStateZip) {
       text.push(`<ParaStyle:cAddress>${c.cityStateZip}`);
     }
-    if (c.phone) text.push(`<ParaStyle:cPhoneNumbers>Phone: ${c.phone}`);
+    if (c.tollfree) text.push(`<ParaStyle:cPhoneNumbers>Phone: ${c.tollfree}`);
     if (c.fax) text.push(`<ParaStyle:cPhoneNumbers>Fax: ${c.fax}`);
     if (c.website) text.push(`<ParaStyle:cWebsite>${c.website}`);
     if (c.email) text.push(`<ParaStyle:cEmail>${c.email}`);
@@ -73,7 +73,7 @@ module.exports = async ({ apollo }) => {
     // push a tmp zip file of image to the S3 server
     uploadToS3('base-cms-exports', 'exports', `${tmpDir}/${exportName}`);
 
-    lines.push(`<ParaStyel:LogoDownloadPath>https://base-cms-exports.s3.amazonaws.com/exports/${exportName}`);
+    cleanLines.push(`<ParaStyel:LogoDownloadPath>https://base-cms-exports.s3.amazonaws.com/exports/${exportName}`);
   }
 
   // @todo port special character filter from php

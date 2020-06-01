@@ -63,7 +63,7 @@ module.exports = async ({ apollo }) => {
     // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
     if (taxonomyIds.includes(2024381) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Dir${appendedStyleText}>${c.primaryImage.source.name}`);
-      const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/${c.primaryImage.source.name}`;
+      const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
     }
     text.push(`<ParaStyle:DirCoName${appendedStyleText}>${formatText(c.name)}`);
@@ -93,7 +93,7 @@ module.exports = async ({ apollo }) => {
     // push a tmp zip file of image to the S3 server
     uploadToS3('base-cms-exports', 'exports', `${tmpDir}/${exportName}`);
 
-    lines.push(`<ParaStyel:LogoDownloadPath>https://base-cms-exports.s3.amazonaws.com/exports/${exportName}`);
+    cleanLines.push(`<ParaStyel:LogoDownloadPath>https://base-cms-exports.s3.amazonaws.com/exports/${exportName}`);
   }
 
   // @todo port special character filter from php
