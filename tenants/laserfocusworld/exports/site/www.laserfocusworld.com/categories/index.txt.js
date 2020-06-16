@@ -85,7 +85,7 @@ module.exports = async ({ apollo }) => {
           break;
       }
     }
-    if (c.email && taxonomyIds.includes(2024382)) info = `${info.trim()}, ${c.email}, `;
+    if (c.email && taxonomyIds.includes(2024382)) info = `${info.trim()}, ${c.email}`;
     if (c.website && taxonomyIds.includes(2024382)) info = `${info.trim()}, ${c.website.replace('https://', '').replace('http://', '')}`;
     text.push(`<ParaStyle:CatCoName${appendedStyleText}>${formatText(c.name)}`);
     text.push(`<ParaStyle:CatCoAddress${appendedStyleText}>${info.trimEnd(', ').trimEnd(',')}`);
