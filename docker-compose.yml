@@ -134,5 +134,22 @@ services:
       - "19504:80"
       - "29504:29504"
 
+  foundrymag:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/foundrymag
+    environment:
+      <<: *env
+      <<: *env-gemenon
+      PORT: 80
+      EXPOSED_PORT: 19505
+      LIVERELOAD_PORT: 29505
+      TENANT_KEY: ebm_foundrymag
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19505:80"
+      - "29505:29505"
+
 volumes:
   yarn-cache: {}
