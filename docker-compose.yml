@@ -151,5 +151,39 @@ services:
       - "19505:80"
       - "29505:29505"
 
+  forgingmagazine:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/forgingmagazine
+    environment:
+      <<: *env
+      <<: *env-gemenon
+      PORT: 80
+      EXPOSED_PORT: 19506
+      LIVERELOAD_PORT: 29506
+      TENANT_KEY: ebm_forgingmagazine
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19506:80"
+      - "29506:29506"
+
+  ledsmagazine:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/ledsmagazine
+    environment:
+      <<: *env
+      <<: *env-aerilon
+      PORT: 80
+      EXPOSED_PORT: 19507
+      LIVERELOAD_PORT: 29507
+      TENANT_KEY: ebm_leds
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19507:80"
+      - "29507:29507"
+
 volumes:
   yarn-cache: {}
