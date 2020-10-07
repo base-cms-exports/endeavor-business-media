@@ -21,6 +21,13 @@ fragment WebsiteSectionHierarchyFragment on WebsiteSection {
                 edges {
                   node {
                     ...WebsiteSectionFragment
+                      children(input: { pagination: { limit: 0 } }) {
+                        edges {
+                          node {
+                            ...WebsiteSectionFragment
+                          }
+                        }
+                      }
                     parent {
                       ...WebsiteSectionFragment
                     }
