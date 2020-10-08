@@ -92,7 +92,8 @@ module.exports = async ({ apollo }) => {
       if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceEnd>');
     }
     text.push(`<ParaStyle:CatCoName${appendedStyleText}>${formatText(c.name)}`);
-    if (taxonomyIds.includes(2024815)) text.push(`<cConditionalText:AdRefs>\\<ADREF:${c.id}\\><cConditionalText:></cConditionalText>`);
+    if (taxonomyIds.includes(2024814) || taxonomyIds.includes(2024815)) text.push(`<ParaStyle:CatCoUrl${appendedStyleText}>${c.website.replace('https://', '').replace('http://', '')}`);
+    if (taxonomyIds.includes(2024815)) text.push(`<ParaStyle:AdReference>See ad on page <cConditionalText:AdRefs>\\<ADREF:${c.id}\\><cConditionalText:>`);
     return text.join('\n');
   });
 

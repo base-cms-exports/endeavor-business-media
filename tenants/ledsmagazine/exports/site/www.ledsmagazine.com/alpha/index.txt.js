@@ -65,7 +65,9 @@ module.exports = async ({ apollo }) => {
           break;
       }
     }
-    if (c.phone && featured) info = `${info.trim()} TEL: ${c.phone}, `;
+    // let phone = c.phone;
+    const phone = (c.phone && c.country && (c.country === 'United States' || c.country === 'Canada')) ? `1-${c.phone}` : c.phone;
+    if (phone && featured) info = `${info.trim()} TEL: ${phone}, `;
     if (c.fax && featured) info = `${info.trim()} Fax: ${c.fax}, `;
     if (c.email && featured) info = `${info.trim()} ${c.email}, `;
     if (c.website) info = `${info.trim()} ${c.website.replace('https://', '').replace('http://', '')}`;
@@ -94,7 +96,7 @@ module.exports = async ({ apollo }) => {
     text.push(`<ParaStyle:DirCoName${appendedStyleText}>${formatText(c.name)}`);
     const info = getFormatedInfo(c, appendedStyleText, taxonomyIds);
     if (info) text.push(info);
-    if (taxonomyIds.includes(2024815)) text.push(`<ParaStyle:AdReference>See ad pAd_Ref_${c.id}`);
+    if (taxonomyIds.includes(2024815)) text.push(`<ParaStyle:AdReference>See ad on page <cConditionalText:AdRefs>\\<ADREF:${c.id}\\><cConditionalText:>`);
     if ((taxonomyIds.includes(2024814) || taxonomyIds.includes(2024815)) && c.body) text.push(`<ParaStyle:DirCoDesc${appendedStyleText}>${formatText(c.body.replace(/(<([^>]+)>)/ig, ''))}`);
 
     return text.join('\n');
