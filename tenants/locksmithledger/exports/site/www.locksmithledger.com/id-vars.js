@@ -11,6 +11,7 @@ const channelSectionIds = [
   62954,
   // Safes
   62981,
+  // Distributors
   62999,
 ];
 
