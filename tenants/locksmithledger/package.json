@@ -1,0 +1,29 @@
+{
+  "name": "@endeavor-business-media/exports-locksmithledger",
+  "version": "0.0.0",
+  "author": "Brian Miller <bmiller@endeavorb2b.com>",
+  "repository": "https://github.com/base-cms-exports/endeavor-business-media/tree/master/tenants/locksmithledger",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "basecms-exports dev index.js",
+    "compile": "basecms-marko-compile compile --dir ./ --silent true",
+    "lint": "eslint --ext .js --max-warnings 5 ./",
+    "test": "yarn lint && yarn compile"
+  },
+  "dependencies": {
+    "@base-cms/export-cli": "^1.15.0",
+    "@base-cms/export-framework": "^1.15.0",
+    "@base-cms/marko-core": "^1.15.0",
+    "@base-cms/object-path": "^1.9.0",
+    "@endeavor-business-media/common": "^0.0.0",
+    "aws-sdk": "^2.614.0",
+    "envalid": "^6.0.1",
+    "graphql": "^14.5.4",
+    "graphql-tag": "^2.10.1",
+    "i18n-iso-countries": "^4.3.1",
+    "newrelic": "^5.11.0",
+    "node-fetch": "^2.6.0",
+    "zip-folder": "^1.0.0"
+  }
+}

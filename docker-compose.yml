@@ -185,5 +185,22 @@ services:
       - "19507:80"
       - "29507:29507"
 
+  locksmithledger:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/locksmithledger
+    environment:
+      <<: *env
+      <<: *env-picon
+      PORT: 80
+      EXPOSED_PORT: 19508
+      LIVERELOAD_PORT: 29508
+      TENANT_KEY: cygnus_ll
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19508:80"
+      - "29508:29508"
+
 volumes:
   yarn-cache: {}
