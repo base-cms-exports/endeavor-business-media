@@ -29,6 +29,8 @@ module.exports = async ({ apollo }) => {
 
   const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
 
+  let currentLetter = '#';
+
   // Wrap content in paragraph style
   const printContent = arr => arr.map((c) => {
     if (c.companyType !== 'Manufacturer') return '';
@@ -36,29 +38,41 @@ module.exports = async ({ apollo }) => {
     const companyTaxonomyIds = getTaxonomyIds(c.taxonomy.edges);
 
     const text = [];
+    const companyLetter = c.name.substr(0, 1);
+    if (currentLetter !== companyLetter) {
+      const regex = /[^A-Z]/g;
+      companyLetter.match(regex);
+      if (currentLetter.toUpperCase() !== companyLetter.toUpperCase()) {
+        if (!companyLetter.match(regex)) {
+          currentLetter = companyLetter;
+          text.push(`<ParaStyle:cLetter>${currentLetter}`);
+        }
+      }
+    }
     if (companyTaxonomyIds.includes(10376) && c.primaryImage) {
-      text.push(`<ParaStyle:cLogo>${c.primaryImage.source.name}`);
+      text.push(`<ParaStyle:cImage>${c.primaryImage.source.name}`);
       const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
     }
     text.push(`<ParaStyle:cName>${formatText(c.name)}`);
-    if (c.address1) text.push(`<ParaStyle:cAddress>${c.address1}`);
-    if (c.address2) text.push(`<ParaStyle:cAddress>${c.address2}`);
+    if (c.address1) text.push(`<ParaStyle:cStandard>${c.address1}`);
+    if (c.address2) text.push(`<ParaStyle:cStandard>${c.address2}`);
     if (c.cityStateZip && c.country) {
-      text.push(`<ParaStyle:cAddress>${c.cityStateZip} ${c.country}`);
+      text.push(`<ParaStyle:cStandard>${c.cityStateZip} ${c.country}`);
     } else if (c.cityStateZip) {
-      text.push(`<ParaStyle:cAddress>${c.cityStateZip}`);
+      text.push(`<ParaStyle:cStandard>${c.cityStateZip}`);
     }
-    if (c.tollfree) text.push(`<ParaStyle:cPhoneNumbers>Phone: ${c.tollfree}`);
-    if (c.fax) text.push(`<ParaStyle:cPhoneNumbers>Fax: ${c.fax}`);
-    if (c.website) text.push(`<ParaStyle:cWebsite>${c.website}`);
-    if (c.email) text.push(`<ParaStyle:cEmail>${c.email}`);
-    text.push(`<ParaStyle:ProductCategoryIds>${getNumericalCatId(c).join(', ')}`);
+    if (c.tollfree) text.push(`<ParaStyle:cStandard>Phone: ${c.tollfree}`);
+    if (c.fax) text.push(`<ParaStyle:cStandard>Fax: ${c.fax}`);
+    if (c.website) text.push(`<ParaStyle:cStandard>${c.website.replace('https://', '').replace('http://', '')}`);
+    if (c.email) text.push(`<ParaStyle:cStandard>${c.email}`);
+    text.push(`<ParaStyle:cStandard>${getNumericalCatId(c).join(', ')}`);
     return text.join('\n');
   });
 
   const lines = [
     '<ASCII-MAC>', // @todo detect and/or make query a param
+    '<ParaStyle:Letter>#',
     ...printContent(companies),
   ];
   const cleanLines = lines.filter(e => e);
