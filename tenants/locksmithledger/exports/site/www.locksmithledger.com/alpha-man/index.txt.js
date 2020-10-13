@@ -3,19 +3,32 @@ const { downloadImages, zipItUp, uploadToS3 } = require('../utils/image-handler'
 const { retrieveCompanies } = require('../utils/retrieve-companies');
 const { retrieveFilterdCompanies } = require('../utils/retrieve-filtered-companies');
 const { formatText } = require('../utils/format-text');
-const { sectionIds } = require('../id-vars');
+const { findCommonArrayValue } = require('../utils/find-common-array-value');
+const { channelSectionIds, manufactureCatIds } = require('../id-vars');
 
 const exportName = `export-${Date.now()}.zip`;
 const companyLogos = [];
 
+const getNumericalCatId = (company) => {
+  const numericalCatIds = [];
+  const sectionIds = company.websiteSchedules.map(t => t.section.id);
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, value] of Object.entries(manufactureCatIds)) {
+    const inCat = findCommonArrayValue(sectionIds, value);
+    if (inCat) numericalCatIds.push(key);
+  }
+  return numericalCatIds;
+};
+
 module.exports = async ({ apollo }) => {
   const allCompanies = await retrieveCompanies(apollo, MagazineScheduledContentQuery);
 
-  const companies = retrieveFilterdCompanies(allCompanies, sectionIds);
+  const companies = retrieveFilterdCompanies(allCompanies, channelSectionIds);
 
   companies.sort((a, b) => a.name.localeCompare(b.name));
 
   const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
+
   // Wrap content in paragraph style
   const printContent = arr => arr.map((c) => {
     if (c.companyType !== 'Manufacturer') return '';
@@ -40,7 +53,7 @@ module.exports = async ({ apollo }) => {
     if (c.fax) text.push(`<ParaStyle:cPhoneNumbers>Fax: ${c.fax}`);
     if (c.website) text.push(`<ParaStyle:cWebsite>${c.website}`);
     if (c.email) text.push(`<ParaStyle:cEmail>${c.email}`);
-
+    text.push(`<ParaStyle:ProductCategoryIds>${getNumericalCatId(c).join(', ')}`);
     return text.join('\n');
   });
 

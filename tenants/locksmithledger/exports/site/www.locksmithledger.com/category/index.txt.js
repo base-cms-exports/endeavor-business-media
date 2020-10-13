@@ -30,6 +30,7 @@ module.exports = async ({ apollo }) => {
 
   // Get all companies scheduled to the site
   const companies = await retrieveCompanies(apollo, allPublishedContentQuery);
+  companies.sort((a, b) => a.name.localeCompare(b.name));
 
   // // Get the sections and map companies into them
   const segments = await mapHierarchy(sections, companies);
