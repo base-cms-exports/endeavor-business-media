@@ -66,7 +66,7 @@ module.exports = async ({ apollo }) => {
   });
 
   const lines = [
-    '<ASCII-MAC>', // @todo detect and/or make query a param
+    '<ASCII-MAC>',
     '<ParaStyle:Letter>#',
     ...printContent(companies),
   ];

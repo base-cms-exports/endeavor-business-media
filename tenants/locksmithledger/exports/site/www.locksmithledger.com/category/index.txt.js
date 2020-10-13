@@ -65,7 +65,7 @@ module.exports = async ({ apollo }) => {
   };
 
   const lines = [
-    '<ASCII-MAC>', // @todo detect and/or make query a param
+    '<ASCII-MAC>',
     ...segments.reduce(printSection, []),
   ];
   const cleanLines = lines.filter(e => e);
