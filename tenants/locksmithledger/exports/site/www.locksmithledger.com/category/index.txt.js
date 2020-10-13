@@ -50,15 +50,15 @@ module.exports = async ({ apollo }) => {
     content,
   }) => {
     const level = ((fullName.match(/ > /g) || []).length > 0)
-      ? 'Subhead'
-      : '';
+      ? 'SubCategory'
+      : 'MainCategory';
 
     return [
       ...arr,
       // Only include categories if they have content or children
       ...(content.length || children.length ? [
-        `<ParaStyle:Cat${level}>${name}`,
-        ...printContent(content),
+        `<ParaStyle:c${level}>${name}`,
+        ...(level === 'MainCategory' ? '' : printContent(content)),
         ...children.reduce(printSection, []),
       ] : []),
     ];
