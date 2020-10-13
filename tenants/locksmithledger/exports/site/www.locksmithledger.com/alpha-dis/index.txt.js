@@ -54,12 +54,8 @@ module.exports = async ({ apollo }) => {
     text.push(`<ParaStyle:cName>${formatText(c.name)}`);
     if (c.address1) text.push(`<ParaStyle:cStandard>${c.address1}`);
     if (c.address2) text.push(`<ParaStyle:cStandard>${c.address2}`);
-    // if (c.cityStateZip && c.country) {
-    //   text.push(`<ParaStyle:cStandard>${c.cityStateZip} ${c.country}`);
-    // } else if (c.cityStateZip) {
-    //   text.push(`<ParaStyle:cStandard>${c.cityStateZip}`);
-    // }
-    text.push(`<ParaStyle:cStandard>${c.cityStateZip}`);
+    if (c.cityStateZip) text.push(`<ParaStyle:cStandard>${c.cityStateZip}`);
+    if (c.country) text.push(`<ParaStyle:cStandard>${c.country}`);
     if (c.phone) text.push(`<ParaStyle:cStandard>Phone: ${c.phone}`);
     if (c.tollfree) text.push(`<ParaStyle:cStandard>Toll-Free: ${c.tollfree}`);
     if (c.fax) text.push(`<ParaStyle:cStandard>Fax: ${c.fax}`);
