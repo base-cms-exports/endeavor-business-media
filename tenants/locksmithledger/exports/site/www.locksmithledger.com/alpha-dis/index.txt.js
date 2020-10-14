@@ -4,7 +4,7 @@ const { retrieveCompanies } = require('../utils/retrieve-companies');
 const { retrieveFilterdCompanies } = require('../utils/retrieve-filtered-companies');
 const { formatText } = require('../utils/format-text');
 const { findCommonArrayValue } = require('../utils/find-common-array-value');
-const { channelSectionIds, distributorCatIds } = require('../id-vars');
+const { channelSectionIds, manufactureCatIds } = require('../id-vars');
 
 const exportName = `export-${Date.now()}.zip`;
 const companyLogos = [];
@@ -13,7 +13,7 @@ const getNumericalCatId = (company) => {
   const numericalCatIds = [];
   const sectionIds = company.websiteSchedules.map(t => t.section.id);
   // eslint-disable-next-line no-restricted-syntax
-  for (const [key, value] of Object.entries(distributorCatIds)) {
+  for (const [key, value] of Object.entries(manufactureCatIds)) {
     const inCat = findCommonArrayValue(sectionIds, value);
     if (inCat) numericalCatIds.push(key);
   }
