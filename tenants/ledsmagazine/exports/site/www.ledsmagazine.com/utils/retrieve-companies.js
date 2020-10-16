@@ -18,9 +18,9 @@ const retrieveCompanies = async (apollo, query) => {
   const now = Date.now().valueOf();
   return promise.map((company) => {
     // Add logic to base-cms graph to handle publised after date input instead of this
-    const postFeb1518 = company.published > 1577840400000;
+    const postJuly1718 = company.published > 1530403200000;
     const sectionIds = getAsArray(company, 'websiteSchedules')
-      .filter(({ start, end }) => start < now && (!end || end > now) && postFeb1518)
+      .filter(({ start, end }) => start < now && (!end || end > now) && postJuly1718)
       .map(({ section }) => section.id);
     return { ...company, sectionIds };
   });
