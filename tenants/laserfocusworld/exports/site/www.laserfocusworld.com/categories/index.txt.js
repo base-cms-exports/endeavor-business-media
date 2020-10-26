@@ -61,7 +61,7 @@ module.exports = async ({ apollo }) => {
     if (taxonomyIds.includes(2024382)) appendedStyleText = `${appendedStyleText}Ad`;
     if (taxonomyIds.includes(2024381) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Cat${appendedStyleText}>${c.primaryImage.source.name}`);
-      const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
+      const imgPath = `http://media.cygnus.com.s3-website-us-east-1.amazonaws.com/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
     }
     // text.push(`<ParaStyle:CatCoName${appendedStyleText}>${c.name}`);

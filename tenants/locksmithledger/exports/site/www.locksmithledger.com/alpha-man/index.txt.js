@@ -51,7 +51,7 @@ module.exports = async ({ apollo }) => {
     }
     if (companyTaxonomyIds.includes(10376) && c.primaryImage) {
       text.push(`<ParaStyle:cImage>${c.primaryImage.source.name}`);
-      const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
+      const imgPath = `http://media.cygnus.com.s3-website-us-east-1.amazonaws.com/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
     }
     text.push(`<ParaStyle:cName>${formatText(c.name)}`);

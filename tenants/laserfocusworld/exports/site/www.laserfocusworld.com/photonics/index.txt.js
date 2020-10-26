@@ -67,7 +67,7 @@ module.exports = async ({ apollo }) => {
     // if (appendedStyleText !== '') text.push('<ParaStyle:WhiteSpaceStart>');
     if (taxonomyIds.includes(2024381) && c.primaryImage !== null) {
       text.push(`<ParaStyle:Dir${appendedStyleText}>${c.primaryImage.source.name}`);
-      const imgPath = `https://cdn.baseplatform.io/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
+      const imgPath = `http://media.cygnus.com.s3-website-us-east-1.amazonaws.com/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
     }
     text.push(`<ParaStyle:DirCoName${appendedStyleText}>${formatText(c.name)}`);

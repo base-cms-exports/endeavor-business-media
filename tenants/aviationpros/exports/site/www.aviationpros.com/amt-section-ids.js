@@ -1,4 +1,4 @@
-const gswSectionIds = [
+const amtSectionIds = [
   // - Aircraft Airframe & Accessories(62119)
   62119,
   // - Chemicals & Solvents(62149)
@@ -26,10 +26,10 @@ const gswSectionIds = [
   // - Shop Equipment(62183)
   62183,
   // - Software(62242)
-  // 62242, // invalid
+  62242, // invalid
   // - Tool Storage(62196)
   62196,
   // - Tools & Equipment(62148)
   62148,
 ];
-module.exports = { gswSectionIds };
+module.exports = { amtSectionIds };

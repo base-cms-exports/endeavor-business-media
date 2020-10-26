@@ -24,6 +24,7 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
           }
         }
         ... on ContentCompany {
+          phone
           tollfree
           fax
           email

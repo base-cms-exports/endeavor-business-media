@@ -21,12 +21,12 @@ const mapHierarchy = (sections, companies) => sections.reduce((arr, section) => 
 
 module.exports = async ({ apollo }) => {
   // This will return the section for amt
-  const fuelSections = await retrieveSectionsByIds(apollo, websiteSectionsQuery, amtSectionIds);
+  const amtSections = await retrieveSectionsByIds(apollo, websiteSectionsQuery, amtSectionIds);
   // Get all companies scheduled to the site
   const companies = await retrieveCompanies(apollo, allPublishedContentQuery);
 
   // // Get the sections and map companies into them
-  const amtSegments = await mapHierarchy(fuelSections, companies);
+  const amtSegments = await mapHierarchy(amtSections, companies);
 
   const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
   // Wrap content in paragraph style
