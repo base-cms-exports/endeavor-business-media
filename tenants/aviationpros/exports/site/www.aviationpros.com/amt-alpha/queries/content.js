@@ -27,7 +27,7 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
           phone
           tollfree
           fax
-          email
+          publicEmail
           website
         }
         ... on Addressable {

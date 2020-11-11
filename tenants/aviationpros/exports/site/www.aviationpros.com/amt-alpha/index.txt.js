@@ -43,7 +43,7 @@ module.exports = async ({ apollo }) => {
     if (c.phone) text.push(`<ParaStyle:cPhoneNumbers>Phone: ${c.phone}`);
     if (c.tollfree) text.push(`<ParaStyle:cPhoneNumbers>Tollfree: ${c.tollfree}`);
     if (c.fax) text.push(`<ParaStyle:cPhoneNumbers>Fax: ${c.fax}`);
-    if (c.email) text.push(`<ParaStyle:cEmail>${c.email}`);
+    if (c.publicEmail) text.push(`<ParaStyle:cEmail>${c.publicEmail}`);
     if (c.website) text.push(`<ParaStyle:cWebsite>${c.website}`);
     if (c.body && (companyTaxonomyIds.includes(3128145) || companyTaxonomyIds.includes(3128146))) {
       text.push(`<ParaStyle:cDescription>${formatText(c.body.replace(/(<([^>]+)>)/ig, ''))}`);
@@ -62,7 +62,7 @@ module.exports = async ({ apollo }) => {
     // Tempararly download all logs for zipping up.
     await downloadImages(`${tmpDir}/images`, companyLogos);
     // Zip up all logos required for export
-    await zipItUp(`${tmpDir}/images`, tmpDir, exportName);
+    zipItUp(`${tmpDir}/images`, tmpDir, exportName);
     // push a tmp zip file of image to the S3 server
     uploadToS3('base-cms-exports', 'exports', `${tmpDir}/${exportName}`);
 
