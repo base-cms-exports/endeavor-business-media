@@ -15,36 +15,11 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         published
         name
         type
-        body(input: { mutation: Magazine })
-        taxonomy {
-          edges {
-            node {
-              id
-            }
-          }
-        }
         ... on ContentCompany {
           phone
+          publicEmail
           email
           website
-        }
-        ... on Addressable {
-          address1
-          address2
-          city
-          state
-          cityStateZip
-          country
-        }
-        primaryImage {
-          id
-          src
-          alt
-          isLogo
-          source {
-            name
-          }
-          filePath
         }
         websiteSchedules {
           start

@@ -246,7 +246,7 @@ services:
       PORT: 80
       EXPOSED_PORT: 19511
       LIVERELOAD_PORT: 29511
-      TENANT_KEY: cygnus_mass
+      TENANT_KEY: ebm_hydraulicspneumatics
       AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     ports:
