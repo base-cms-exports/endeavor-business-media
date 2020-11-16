@@ -253,5 +253,22 @@ services:
       - "19511:80"
       - "29511:29511"
 
+  industrial-lasers:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/industrial-lasers
+    environment:
+      <<: *env
+      <<: *env-aerilon
+      PORT: 80
+      EXPOSED_PORT: 19512
+      LIVERELOAD_PORT: 29512
+      TENANT_KEY: ebm_ils
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19512:80"
+      - "29512:29512"
+
 volumes:
   yarn-cache: {}
