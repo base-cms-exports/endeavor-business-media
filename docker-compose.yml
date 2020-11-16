@@ -202,5 +202,56 @@ services:
       - "19508:80"
       - "29508:29508"
 
+  hydraulicspneumatics:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/hydraulicspneumatics
+    environment:
+      <<: *env
+      <<: *env-gemenon
+      PORT: 80
+      EXPOSED_PORT: 19509
+      LIVERELOAD_PORT: 29509
+      TENANT_KEY: ebm_hydraulicspneumatics
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19509:80"
+      - "29509:29509"
+
+  masstransitmag:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/masstransitmag
+    environment:
+      <<: *env
+      <<: *env-picon
+      PORT: 80
+      EXPOSED_PORT: 19510
+      LIVERELOAD_PORT: 29510
+      TENANT_KEY: cygnus_mass
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19510:80"
+      - "29510:29510"
+
+  hydraulicspneumatics:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/hydraulicspneumatics
+    environment:
+      <<: *env
+      <<: *env-gemenon
+      PORT: 80
+      EXPOSED_PORT: 19511
+      LIVERELOAD_PORT: 29511
+      TENANT_KEY: cygnus_mass
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19511:80"
+      - "29511:29511"
+
 volumes:
   yarn-cache: {}
