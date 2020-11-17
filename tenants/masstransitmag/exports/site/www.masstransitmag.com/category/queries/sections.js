@@ -5,7 +5,6 @@ fragment WebsiteSectionFragment on WebsiteSection {
   id
   alias
   name
-  fullName
 }
 fragment WebsiteSectionHierarchyFragment on WebsiteSection {
   ...WebsiteSectionFragment

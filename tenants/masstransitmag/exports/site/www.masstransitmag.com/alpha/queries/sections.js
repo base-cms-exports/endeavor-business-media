@@ -5,7 +5,6 @@ fragment WebsiteSectionFragment on WebsiteSection {
   id
   alias
   name
-  fullName
 }
 fragment WebsiteSectionHierarchyFragment on WebsiteSection {
   ...WebsiteSectionFragment
@@ -13,23 +12,6 @@ fragment WebsiteSectionHierarchyFragment on WebsiteSection {
     edges {
       node {
         ...WebsiteSectionFragment
-        children(input: { pagination: { limit: 0 } }) {
-          edges {
-            node {
-              ...WebsiteSectionFragment
-              children(input: { pagination: { limit: 0 } }) {
-                edges {
-                  node {
-                    ...WebsiteSectionFragment
-                    parent {
-                      ...WebsiteSectionFragment
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     }
   }
