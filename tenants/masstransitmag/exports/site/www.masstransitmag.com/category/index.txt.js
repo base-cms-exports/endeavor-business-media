@@ -1,32 +1,40 @@
+const { getAsArray } = require('@base-cms/object-path');
 const allPublishedContentQuery = require('./queries/content');
+const { retrieveSectionIds } = require('../utils/retrieve-section-ids');
 const websiteSectionsQuery = require('./queries/sections');
-const { retrieveSectionsByIds } = require('../utils/retrieve-sections-by-ids');
-const { downloadImages, zipItUp, uploadToS3 } = require('../utils/image-handler');
 const { retrieveCompanies } = require('../utils/retrieve-companies');
+const { retrieveFilterdCompanies } = require('../utils/retrieve-filtered-companies');
+const { retrieveSections } = require('../utils/retrieve-sections');
 const { formatText } = require('../utils/format-text');
-const { massSectionIds } = require('../section-ids');
+const { massSectionAliases } = require('../section-aliases');
 
-const exportName = `export-${Date.now()}.zip`;
-const companyLogos = [];
-
-const mapHierarchy = (sections, companies) => sections.reduce((arr, section) => [
-  ...arr,
-  {
-    ...section,
-    content: companies
-      .filter(({ sectionIds }) => sectionIds.includes(section.id))
-      .sort((a, b) => a.name.localeCompare(b.name)),
-  },
-], []).sort((a, b) => a.name.localeCompare(b.name));
+const mapHierarchy = (sections, companies) => sections.reduce((arr, section) => {
+  const childNodes = getAsArray(section, 'children.edges').map(({ node }) => node);
+  const children = childNodes.length ? mapHierarchy(childNodes, companies) : [];
+  return [
+    ...arr,
+    {
+      ...section,
+      children,
+      content: companies
+        .filter(({ sectionIds }) => sectionIds.includes(section.id))
+        .sort((a, b) => a.name.localeCompare(b.name)),
+    },
+  ];
+}, []).sort((a, b) => a.name.localeCompare(b.name));
 
 module.exports = async ({ apollo }) => {
   // This will return the section for amt
-  const amtSections = await retrieveSectionsByIds(apollo, websiteSectionsQuery, massSectionIds);
-  // Get all companies scheduled to the site
-  const companies = await retrieveCompanies(apollo, allPublishedContentQuery);
-
+  const sections = await Promise.all(massSectionAliases.map(async alias => retrieveSections(
+    apollo,
+    websiteSectionsQuery,
+    alias,
+  )));
+  const massSectionIds = await retrieveSectionIds(sections, []);
+  const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery);
+  const companies = await retrieveFilterdCompanies(allCompanies, massSectionIds);
   // // Get the sections and map companies into them
-  const amtSegments = await mapHierarchy(amtSections, companies);
+  const segments = await mapHierarchy(sections, companies);
 
   const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
   // Wrap content in paragraph style
@@ -40,32 +48,36 @@ module.exports = async ({ apollo }) => {
     return text.join('\n');
   });
 
-  // The big kahuna. Loop over Sections and content into the accumulator (arr)
-  const printSection = (arr, { name, content }) => [
+  // // The big kahuna. Loop over Sections and content into the accumulator (arr)
+  // const printSection = (arr, { name, content }) => [
+  //   ...arr,
+  //   // Only include categories if they have content
+  //   ...(content.length ? [
+  //     `<ParaStyle:cCategoryName>${name}`,
+  //     ...printContent(content),
+  //   ] : []),
+  // ];
+  // The big kahuna. Expands children and content into the accumulator (arr)
+  const printSection = (arr, {
+    name,
+    children,
+    content,
+    parent,
+  }) => [
     ...arr,
-    // Only include categories if they have content
-    ...(content.length ? [
-      `<ParaStyle:cCategoryName>${name}`,
+    // Only include categories if they have content or children
+    ...(content.length || children.length ? [
+      `<ParaStyle:c${parent ? 'Subcategory' : 'Category'}>${name}`,
       ...printContent(content),
+      ...children.reduce(printSection, []),
     ] : []),
   ];
 
   const lines = [
     '<ASCII-MAC>', // @todo detect and/or make query a param
-    ...amtSegments.reduce(printSection, []),
+    ...segments.reduce(printSection, []),
   ];
   const cleanLines = lines.filter(e => e);
-  if (companyLogos.length !== 0) {
-    const tmpDir = `${__dirname}/tmp`;
-    // Tempararly download all logs for zipping up.
-    await downloadImages(`${tmpDir}/images`, companyLogos);
-    // Zip up all logos required for export
-    await zipItUp(`${tmpDir}/images`, tmpDir, exportName);
-    // push a tmp zip file of image to the S3 server
-    uploadToS3('base-cms-exports', 'exports', `${tmpDir}/${exportName}`);
-
-    lines.push(`<ParaStyel:LogoDownloadPath>https://base-cms-exports.s3.amazonaws.com/exports/${exportName}`);
-  }
   // @todo port special character filter from php
   return cleanLines.join('\n');
 };

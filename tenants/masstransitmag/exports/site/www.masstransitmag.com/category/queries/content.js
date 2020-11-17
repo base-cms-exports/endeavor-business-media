@@ -14,28 +14,12 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         id
         published
         name
-        type
         taxonomy {
           edges {
             node {
               id
             }
           }
-        }
-        ... on ContentCompany {
-          city
-          country
-          website
-        }
-        primaryImage {
-          id
-          src
-          alt
-          isLogo
-          source {
-            name
-          }
-          filePath
         }
         websiteSchedules {
           start

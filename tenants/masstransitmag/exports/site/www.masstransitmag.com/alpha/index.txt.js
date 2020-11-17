@@ -1,28 +1,36 @@
 const allPublishedCopanyContentQuery = require('./queries/company');
 const allPublishedProductContentQuery = require('./queries/product');
-// const allCompanyProductContentQuery = require('./queries/company-products');
+const websiteSectionsQuery = require('./queries/sections');
 const { downloadImages, zipItUp, uploadToS3 } = require('../utils/image-handler');
 const { retrieveCompanies } = require('../utils/retrieve-companies');
 const { retrieveProducts } = require('../utils/retrieve-products');
-// const { retrieveCompanyProducts } = require('../utils/retrieve-company-products');
+const { retrieveSectionIds } = require('../utils/retrieve-section-ids');
 const { retrieveFilterdCompanies } = require('../utils/retrieve-filtered-companies');
 const { retrieveFilterdProducts } = require('../utils/retrieve-filtered-products');
 const { formatText } = require('../utils/format-text');
-const { massSectionIds } = require('../section-ids');
+const { retrieveSections } = require('../utils/retrieve-sections');
+const { massSectionAliases } = require('../section-aliases');
 
 const exportName = `export-${Date.now()}.zip`;
 const companyLogos = [];
 
 module.exports = async ({ apollo }) => {
+  const sections = await Promise.all(massSectionAliases.map(async alias => retrieveSections(
+    apollo,
+    websiteSectionsQuery,
+    alias,
+  )));
+  const massSectionIds = await retrieveSectionIds(sections, []);
+
   const allCompanies = await retrieveCompanies(apollo, allPublishedCopanyContentQuery);
   const allProducts = await retrieveProducts(apollo, allPublishedProductContentQuery);
 
-  const companies = retrieveFilterdCompanies(allCompanies, massSectionIds);
-  const products = retrieveFilterdProducts(allProducts);
+  const companies = await retrieveFilterdCompanies(allCompanies, massSectionIds);
+  const products = await retrieveFilterdProducts(allProducts);
 
   companies.sort((a, b) => a.name.localeCompare(b.name));
+  products.sort((a, b) => a.name.localeCompare(b.name));
 
-  const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
   // Wrap content in paragraph style
   const printContent = arr => arr.map((c) => {
     const companyTaxonomyIds = c.taxonomyIds;
@@ -51,9 +59,15 @@ module.exports = async ({ apollo }) => {
     if (c.website) text.push(`<ParaStyle:cWebsite>${c.website}`);
     if (companyTaxonomyIds.includes(3129132) || companyTaxonomyIds.includes(3129133)) {
       products.forEach((product) => {
-        console.log(c.id, product.company.id);
+        console.log(c.name, product.name);
         if (product.company.id === c.id) {
           text.push(`<ParaStyle:cProductName>${product.name}`);
+          if (product.primaryImage) {
+            text.push(`<ParaStyle:cProductImage>${product.primaryImage.source.name}`);
+            const imgPath = `http://media.cygnus.com.s3-website-us-east-1.amazonaws.com/${product.primaryImage.filePath}/original/${product.primaryImage.source.name}`;
+            if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
+          }
+          if (product.teaser) text.push(`<ParaStyle:cProductDescription>${product.teaser}`);
         }
       });
     }
