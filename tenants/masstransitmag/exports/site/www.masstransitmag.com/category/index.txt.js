@@ -48,15 +48,6 @@ module.exports = async ({ apollo }) => {
     return text.join('\n');
   });
 
-  // // The big kahuna. Loop over Sections and content into the accumulator (arr)
-  // const printSection = (arr, { name, content }) => [
-  //   ...arr,
-  //   // Only include categories if they have content
-  //   ...(content.length ? [
-  //     `<ParaStyle:cCategoryName>${name}`,
-  //     ...printContent(content),
-  //   ] : []),
-  // ];
   // The big kahuna. Expands children and content into the accumulator (arr)
   const printSection = (arr, {
     name,

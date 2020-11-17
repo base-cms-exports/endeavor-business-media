@@ -59,7 +59,6 @@ module.exports = async ({ apollo }) => {
     if (c.website) text.push(`<ParaStyle:cWebsite>${c.website}`);
     if (companyTaxonomyIds.includes(3129132) || companyTaxonomyIds.includes(3129133)) {
       products.forEach((product) => {
-        console.log(c.name, product.name);
         if (product.company.id === c.id) {
           text.push(`<ParaStyle:cProductName>${product.name}`);
           if (product.primaryImage) {
