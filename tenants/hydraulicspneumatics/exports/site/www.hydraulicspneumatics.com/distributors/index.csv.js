@@ -8,7 +8,7 @@ const { retrieveFilterdCompanies } = require('../utils/retrieve-filtered-compani
 
 module.exports = async ({ apollo }) => {
   // This will return the direct decents of the /directory section.
-  const rootSection = await retrieveRootSection(apollo, websiteSectionsQuery, 'manufacturer-directory');
+  const rootSection = await retrieveRootSection(apollo, websiteSectionsQuery, 'distributor-directory');
   // Get all companies scheduled to the site after Feb. 15 2018
   // Date is set in retrieveCompanies function
   const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery);
