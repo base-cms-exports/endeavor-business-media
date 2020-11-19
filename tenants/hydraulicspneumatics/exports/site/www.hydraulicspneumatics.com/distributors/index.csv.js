@@ -17,19 +17,10 @@ module.exports = async ({ apollo }) => {
   // Sort them alpha numerically
   companies.sort((a, b) => a.name.localeCompare(b.name));
 
-  // const lines = [['id', 'ComapnyName', 'email', 'PublicEmail', 'ListingEmail']];
-  const lines = [['id', 'ComapnyName', 'email']];
+  const lines = [['id', 'ComapnyName', 'email', 'publicEmail', 'state', 'country']];
 
   companies.forEach((c) => {
-    // let listingEmail;
-    // const listingContacts = getAsArray(c, 'listingContacts');
-    // listingContacts.forEach((contact) => {
-    //   const { email } = contact;
-    //   if (!listingEmail && email) listingEmail = email;
-    // });
-    // lines.push([c.id, replaceCharacters(c.name, ',', ''), c.email, c.publicEmail, listingEmail]);
-
-    lines.push([c.id, replaceCharacters(c.name, ',', ''), c.email]);
+    lines.push([c.id, replaceCharacters(c.name, ',', ''), c.email, c.publicEmail, c.state, c.country]);
   });
 
   // @todo port special character filter from php

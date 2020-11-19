@@ -21,6 +21,10 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
           email
           website
         }
+        ... on Addressable {
+          state
+          country
+        }
         websiteSchedules {
           start
           end
