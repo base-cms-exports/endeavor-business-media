@@ -45,17 +45,22 @@ module.exports = async ({ apollo }) => {
       if (c.teaser) text.push(`<ParaStyle:cDescription>${c.teaser}`);
     }
     text.push(`<ParaStyle:cName>${formatText(c.name)}`);
-    if (c.address1) text.push(`<ParaStyle:cAddress>${c.address1}`);
-    if (c.address2) text.push(`<ParaStyle:cAddress>${c.address2}`);
-    if (c.cityStateZip && c.country) {
-      text.push(`<ParaStyle:cAddress>${c.cityStateZip} ${c.country}`);
-    } else if (c.cityStateZip) {
-      text.push(`<ParaStyle:cAddress>${c.cityStateZip}`);
+    if (
+      companyTaxonomyIds.includes(3129131)
+      || companyTaxonomyIds.includes(3129132)
+      || companyTaxonomyIds.includes(3129133)) {
+      if (c.address1) text.push(`<ParaStyle:cAddress>${c.address1}`);
+      if (c.address2) text.push(`<ParaStyle:cAddress>${c.address2}`);
+      if (c.cityStateZip && c.country) {
+        text.push(`<ParaStyle:cAddress>${c.cityStateZip} ${c.country}`);
+      } else if (c.cityStateZip) {
+        text.push(`<ParaStyle:cAddress>${c.cityStateZip}`);
+      }
+      if (c.phone) text.push(`<ParaStyle:cPhoneNumbers>Phone: ${c.phone}`);
+      if (c.tollfree) text.push(`<ParaStyle:cPhoneNumbers>Tollfree: ${c.tollfree}`);
+      if (c.fax) text.push(`<ParaStyle:cPhoneNumbers>Fax: ${c.fax}`);
+      if (c.publicEmail) text.push(`<ParaStyle:cEmail>${c.publicEmail}`);
     }
-    if (c.phone) text.push(`<ParaStyle:cPhoneNumbers>Phone: ${c.phone}`);
-    if (c.tollfree) text.push(`<ParaStyle:cPhoneNumbers>Tollfree: ${c.tollfree}`);
-    if (c.fax) text.push(`<ParaStyle:cPhoneNumbers>Fax: ${c.fax}`);
-    if (c.publicEmail) text.push(`<ParaStyle:cEmail>${c.publicEmail}`);
     if (c.website) text.push(`<ParaStyle:cWebsite>${c.website}`);
     if (companyTaxonomyIds.includes(3129132) || companyTaxonomyIds.includes(3129133)) {
       products.forEach((product) => {

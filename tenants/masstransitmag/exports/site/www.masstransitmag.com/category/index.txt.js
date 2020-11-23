@@ -10,15 +10,18 @@ const { massSectionAliases } = require('../section-aliases');
 
 const mapHierarchy = (sections, companies) => sections.reduce((arr, section) => {
   const childNodes = getAsArray(section, 'children.edges').map(({ node }) => node);
+
   const children = childNodes.length ? mapHierarchy(childNodes, companies) : [];
+  const filteredCompanies = companies
+    .filter(({ sectionIds }) => sectionIds.includes(section.id))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  console.log(arr, children, filteredCompanies);  
   return [
     ...arr,
     {
       ...section,
       children,
-      content: companies
-        .filter(({ sectionIds }) => sectionIds.includes(section.id))
-        .sort((a, b) => a.name.localeCompare(b.name)),
+      content: filteredCompanies,
     },
   ];
 }, []).sort((a, b) => a.name.localeCompare(b.name));
