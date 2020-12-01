@@ -12,7 +12,7 @@ const channelSectionIds = [
   // Safes
   62981,
   // Distributors
-  // 62999,
+  62999,
 ];
 
 const manufactureCatIds = {
