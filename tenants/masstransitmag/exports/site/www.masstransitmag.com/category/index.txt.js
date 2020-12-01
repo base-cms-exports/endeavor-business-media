@@ -15,7 +15,6 @@ const mapHierarchy = (sections, companies) => sections.reduce((arr, section) => 
   const filteredCompanies = companies
     .filter(({ sectionIds }) => sectionIds.includes(section.id))
     .sort((a, b) => a.name.localeCompare(b.name));
-  console.log(arr, children, filteredCompanies);  
   return [
     ...arr,
     {
