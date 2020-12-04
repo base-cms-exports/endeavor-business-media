@@ -60,9 +60,215 @@ services:
       EXPOSED_PORT: 19500
       LIVERELOAD_PORT: 29500
       TENANT_KEY: ebm_vsd
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     ports:
       - "19500:80"
       - "29500:29500"
+
+  aviationpros:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/aviationpros
+    environment:
+      <<: *env
+      <<: *env-picon
+      PORT: 80
+      EXPOSED_PORT: 19501
+      LIVERELOAD_PORT: 29501
+      TENANT_KEY: cygnus_cavc
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19501:80"
+      - "29501:29501"
+
+  laserfocusworld:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/laserfocusworld
+    environment:
+      <<: *env
+      <<: *env-aerilon
+      PORT: 80
+      EXPOSED_PORT: 19502
+      LIVERELOAD_PORT: 29502
+      TENANT_KEY: ebm_lfw
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19502:80"
+      - "29502:29502"
+
+  militaryaerospace:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/militaryaerospace
+    environment:
+      <<: *env
+      <<: *env-aerilon
+      PORT: 80
+      EXPOSED_PORT: 19503
+      LIVERELOAD_PORT: 29503
+      TENANT_KEY: ebm_mae
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19503:80"
+      - "29503:29503"
+
+  rermag:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/rermag
+    environment:
+      <<: *env
+      <<: *env-gemenon
+      PORT: 80
+      EXPOSED_PORT: 19504
+      LIVERELOAD_PORT: 29504
+      TENANT_KEY: ebm_rermag
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19504:80"
+      - "29504:29504"
+
+  foundrymag:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/foundrymag
+    environment:
+      <<: *env
+      <<: *env-gemenon
+      PORT: 80
+      EXPOSED_PORT: 19505
+      LIVERELOAD_PORT: 29505
+      TENANT_KEY: ebm_foundrymag
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19505:80"
+      - "29505:29505"
+
+  forgingmagazine:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/forgingmagazine
+    environment:
+      <<: *env
+      <<: *env-gemenon
+      PORT: 80
+      EXPOSED_PORT: 19506
+      LIVERELOAD_PORT: 29506
+      TENANT_KEY: ebm_forgingmagazine
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19506:80"
+      - "29506:29506"
+
+  ledsmagazine:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/ledsmagazine
+    environment:
+      <<: *env
+      <<: *env-aerilon
+      PORT: 80
+      EXPOSED_PORT: 19507
+      LIVERELOAD_PORT: 29507
+      TENANT_KEY: ebm_leds
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19507:80"
+      - "29507:29507"
+
+  locksmithledger:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/locksmithledger
+    environment:
+      <<: *env
+      <<: *env-picon
+      PORT: 80
+      EXPOSED_PORT: 19508
+      LIVERELOAD_PORT: 29508
+      TENANT_KEY: cygnus_ll
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19508:80"
+      - "29508:29508"
+
+  hydraulicspneumatics:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/hydraulicspneumatics
+    environment:
+      <<: *env
+      <<: *env-gemenon
+      PORT: 80
+      EXPOSED_PORT: 19509
+      LIVERELOAD_PORT: 29509
+      TENANT_KEY: ebm_hydraulicspneumatics
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19509:80"
+      - "29509:29509"
+
+  masstransitmag:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/masstransitmag
+    environment:
+      <<: *env
+      <<: *env-picon
+      PORT: 80
+      EXPOSED_PORT: 19510
+      LIVERELOAD_PORT: 29510
+      TENANT_KEY: cygnus_mass
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19510:80"
+      - "29510:29510"
+
+  hydraulicspneumatics:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/hydraulicspneumatics
+    environment:
+      <<: *env
+      <<: *env-gemenon
+      PORT: 80
+      EXPOSED_PORT: 19511
+      LIVERELOAD_PORT: 29511
+      TENANT_KEY: ebm_hydraulicspneumatics
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19511:80"
+      - "29511:29511"
+
+  industrial-lasers:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/industrial-lasers
+    environment:
+      <<: *env
+      <<: *env-aerilon
+      PORT: 80
+      EXPOSED_PORT: 19512
+      LIVERELOAD_PORT: 29512
+      TENANT_KEY: ebm_ils
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19512:80"
+      - "29512:29512"
 
 volumes:
   yarn-cache: {}
