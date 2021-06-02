@@ -19,7 +19,9 @@ const mapHierarchy = (sections, companies) => sections.reduce((arr, section) => 
     {
       ...section,
       children,
-      content: filteredCompanies,
+      // Ensure that only childsection have content on them.
+      // Set to content: filteredCompanies if you want parent and child sections
+      ...(!childNodes.length ? { content: filteredCompanies } : { content: [] }),
     },
   ];
 }, []).sort((a, b) => a.name.localeCompare(b.name));
