@@ -34,6 +34,9 @@ x-env-gemenon: &env-gemenon
 x-env-picon: &env-picon
   GRAPHQL_URI: ${GRAPHQL_URI-https://picon.graphql.base-cms.io}
 
+x-env-tauron: &env-tauron
+  GRAPHQL_URI: ${GRAPHQL_URI-https://tauron.graphql.base.parameter1.com}
+
 services:
   terminal:
     <<: *node
@@ -269,6 +272,40 @@ services:
     ports:
       - "19512:80"
       - "29512:29512"
+
+  # forconstructionpros:
+  #   <<: *node
+  #   <<: *export-cmd
+  #   working_dir: /root/tenants/forconstructionpros
+  #   environment:
+  #     <<: *env
+  #     <<: *env-tauron
+  #     PORT: 80
+  #     EXPOSED_PORT: 19513
+  #     LIVERELOAD_PORT: 29513
+  #     TENANT_KEY: acbm_fcp
+  #     AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+  #     AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+  #   ports:
+  #     - "19513:80"
+  #     - "29513:29513"
+
+  minexpo:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/minexpo
+    environment:
+      <<: *env
+      <<: *env-tauron
+      PORT: 80
+      EXPOSED_PORT: 19613
+      LIVERELOAD_PORT: 29613
+      TENANT_KEY: ascend_minex
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19613:80"
+      - "29613:29613"
 
 volumes:
   yarn-cache: {}
