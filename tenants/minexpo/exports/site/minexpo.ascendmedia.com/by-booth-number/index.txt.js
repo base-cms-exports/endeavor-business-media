@@ -4,18 +4,23 @@ const { formatText } = require('../utils/format-text');
 
 module.exports = async ({ apollo }) => {
   const companies = await retrieveCompanies(apollo, allPublishedCopanyContentQuery);
-  console.log(companies.length);
-  const companiesByBooth = {};
+  const companiesByBooth = [];
   companies.forEach((company) => {
     if (company.boothNumber) {
       const booths = company.boothNumber.split(',');
       booths.forEach((booth) => {
-        companiesByBooth[booth.trim()] = { ...company, boothNumber: booth };
+        companiesByBooth.push({ ...company, boothNumber: booth.trim() });
       });
     }
   });
-  console.log(companiesByBooth.length);
-  companies.sort((a, b) => a.name.localeCompare(b.name));
+
+  companiesByBooth.sort((a, b) => a.boothNumber.localeCompare(b.boothNumber));
+
+  const alphaCompanies = companiesByBooth.filter(company => /^[a-zA-Z]/.test(company.boothNumber));
+  const nuumberCompanies = companiesByBooth.filter(company => /^[0-9]/.test(company.boothNumber));
+
+  const orederedCompanies = alphaCompanies.concat(nuumberCompanies);
+
 
   // Wrap content in paragraph style
   const printContent = arr => arr.map((c) => {
@@ -39,7 +44,7 @@ module.exports = async ({ apollo }) => {
   const lines = [
     '<ASCII-MAC>', // @todo detect and/or make query a param
     // '<ParaStyle:cLetter>123',
-    ...printContent(Object.values(companiesByBooth)),
+    ...printContent(Object.values(orederedCompanies)),
   ];
   const cleanLines = lines.filter(e => e);
 
