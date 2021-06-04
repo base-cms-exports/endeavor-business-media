@@ -1,4 +1,4 @@
-const { getAsArray } = require('@base-cms/object-path');
+const { getAsArray } = require('@parameter1/base-cms-object-path');
 const paginateQuery = require('@endeavor-business-media/common/paginate-query');
 
 const retrieveCompanies = async (apollo, query) => {

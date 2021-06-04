@@ -1,4 +1,4 @@
-const { getAsArray, getAsObject } = require('@base-cms/object-path');
+const { getAsArray, getAsObject } = require('@parameter1/base-cms-object-path');
 
 // @todo clean this up
 const buildVars = (variables, cursorPath, endCursor) => {

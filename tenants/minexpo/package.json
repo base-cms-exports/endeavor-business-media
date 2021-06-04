@@ -12,10 +12,10 @@
     "test": "yarn lint && yarn compile"
   },
   "dependencies": {
-    "@base-cms/export-cli": "^1.15.0",
-    "@base-cms/export-framework": "^1.15.0",
-    "@base-cms/marko-core": "^1.15.0",
-    "@base-cms/object-path": "^1.9.0",
+    "@parameter1/base-cms-export-cli": "^2.8.5",
+    "@parameter1/base-cms-export-framework": "^2.22.2",
+    "@parameter1/base-cms-marko-core": "^2.12.0",
+    "@parameter1/base-cms-object-path": "^2.5.0",
     "@endeavor-business-media/common": "^0.0.0",
     "aws-sdk": "^2.614.0",
     "envalid": "^6.0.1",

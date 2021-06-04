@@ -1,4 +1,4 @@
-const { getAsArray } = require('@base-cms/object-path');
+const { getAsArray } = require('@parameter1/base-cms-object-path');
 const allPublishedContentQuery = require('./queries/content');
 const { retrieveSectionIds } = require('../utils/retrieve-section-ids');
 const websiteSectionsQuery = require('./queries/sections');

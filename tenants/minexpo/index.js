@@ -1,5 +1,5 @@
 const newrelic = require('newrelic');
-const { startServer } = require('@base-cms/export-framework');
+const { startServer } = require('@parameter1/base-cms-export-framework');
 const coreConfig = require('./config/core');
 const customConfig = require('./config/custom');
 
