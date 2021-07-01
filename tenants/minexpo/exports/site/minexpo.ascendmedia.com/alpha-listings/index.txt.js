@@ -47,7 +47,7 @@ module.exports = async ({ apollo }) => {
       text.push('<ParaStyle:Desc>Need To Figure Out how this will be populated');
     }
     if (c.publicEmail) text.push(`<ParaStyle:Desc>E ${c.publicEmail}`);
-    text.push(`<ParaStyle:${accountType}>${index}`);
+    text.push(`<ParaStyle:${accountType}>${index + 1}`);
     return text.join('\n');
   });
 
