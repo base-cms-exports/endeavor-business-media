@@ -29,14 +29,18 @@ const mapHierarchy = (sections, companies) => sections.reduce((arr, section) => 
 module.exports = async ({ apollo }) => {
   // This will return the section for amt
   const directory = await retrieveSections(apollo, websiteSectionsQuery, 'directory');
-
+  let childSections = [];
   const sections = getAsArray(directory, 'children.edges').map(({ node }) => node);
+  sections.forEach((section) => {
+    const children = getAsArray(section, 'children.edges').map(({ node }) => node);
+    childSections = childSections.concat(children);
+  });
 
-  const directorySectionIds = await retrieveSectionIds(sections, []);
+  const directorySectionIds = await retrieveSectionIds(childSections, []);
   const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery);
   const companies = await retrieveFilterdCompanies(allCompanies, directorySectionIds);
   // // Get the sections and map companies into them
-  const segments = await mapHierarchy(sections, companies);
+  const segments = await mapHierarchy(childSections, companies);
 
   // const getTaxonomyIds = taxonomy => taxonomy.map(t => t.node.id);
   // Wrap content in paragraph style
@@ -46,8 +50,13 @@ module.exports = async ({ apollo }) => {
     // const insert = taxonomyIds.filter(element => companyTaxonomyIds.includes(element));
     // if (insert.length === 0) return '';
     const text = [];
-    text.push(`<ParaStyle:cName>${formatText(c.name)}`);
-    if (c.boothNumber) text.push(`<ParaStyle:cBoothNumber>${formatText(c.boothNumber)}`);
+    if (c.boothNumber) {
+      const strBooths = c.boothNumber.split(',');
+      const cleanBooths = strBooths.map(n => n.trim());
+      text.push(`<ParaStyle:PCatBody>${formatText(c.name)} \t ${formatText(cleanBooths.join(', '))}`);
+    } else {
+      text.push(`<ParaStyle:PCatBody>${formatText(c.name)}`);
+    }
     return text.join('\n');
   });
 
@@ -56,12 +65,13 @@ module.exports = async ({ apollo }) => {
     name,
     children,
     content,
-    parent,
+    // parent,
   }) => [
     ...arr,
     // Only include categories if they have content or children
     ...(content.length || children.length ? [
-      `<ParaStyle:c${parent ? 'Subcategory' : 'Category'}>${name}`,
+      // `<ParaStyle:c${parent ? 'Subcategory' : 'Category'}>${name}`,
+      `<ParaStyle:PCatHead>${name}`,
       ...printContent(content),
       ...children.reduce(printSection, []),
     ] : []),

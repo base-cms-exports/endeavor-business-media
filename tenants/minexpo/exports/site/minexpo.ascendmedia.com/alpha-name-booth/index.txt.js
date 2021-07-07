@@ -2,7 +2,7 @@ const allPublishedCopanyContentQuery = require('./queries/company');
 const { retrieveCompanies } = require('../utils/retrieve-companies');
 const { formatText } = require('../utils/format-text');
 
-let currentLetter = '#';
+let currentLetter = '123';
 module.exports = async ({ apollo }) => {
   const companies = await retrieveCompanies(apollo, allPublishedCopanyContentQuery);
 
@@ -18,18 +18,21 @@ module.exports = async ({ apollo }) => {
       if (currentLetter.toUpperCase() !== companyLetter.toUpperCase()) {
         if (!companyLetter.match(regex)) {
           currentLetter = companyLetter;
-          text.push(`<ParaStyle:cLetter>${currentLetter}`);
+          text.push(`<ParaStyle:AlphaHead>${currentLetter}`);
         }
       }
     }
-    text.push(`<ParaStyle:cName>${formatText(c.name)}`);
-    if (c.boothNumber) text.push(`<ParaStyle:cBoothNumber>${formatText(c.boothNumber)}`);
+    if (c.boothNumber) {
+      const strBooths = c.boothNumber.split(',');
+      const cleanBooths = strBooths.map(n => n.trim());
+      text.push(`<ParaStyle:ByAlpha>${formatText(c.name)} \t ${cleanBooths.join(', ')}`);
+    }
     return text.join('\n');
   });
 
   const lines = [
     '<ASCII-MAC>', // @todo detect and/or make query a param
-    '<ParaStyle:cLetter>123',
+    '<ParaStyle:AlphaHead>123',
     ...printContent(companies),
   ];
   const cleanLines = lines.filter(e => e);

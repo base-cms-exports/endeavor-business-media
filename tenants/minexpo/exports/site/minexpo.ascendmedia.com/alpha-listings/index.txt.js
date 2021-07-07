@@ -26,7 +26,9 @@ module.exports = async ({ apollo }) => {
     const accountType = (c.primarImage) ? 'Acct_logo' : 'Acct';
     if (c.primarImage) text.push(`<ParaStyle:Logo>${c.primaryImage.source.name}`);
     if (c.boothNumber) {
-      text.push(`<ParaStyle:Co>${formatText(c.name)} \t ${formatText(c.boothNumber)}`);
+      const strBooths = c.boothNumber.split(',');
+      const cleanBooths = strBooths.map(n => n.trim());
+      text.push(`<ParaStyle:Co>${formatText(c.name)} \t ${cleanBooths.join(', ')}`);
     } else {
       text.push(`<ParaStyle:Co>${formatText(c.name)}`);
     }
@@ -37,14 +39,14 @@ module.exports = async ({ apollo }) => {
     } else if (c.cityStateZip) {
       text.push(`<ParaStyle:Add>${formatText(c.cityStateZip)}`);
     }
-    if (c.phone) text.push(`<ParaStyle:PhoneWeb>P ${c.phone}`);
-    if (c.tollfree) text.push(`<ParaStyle:PhoneWeb>TFP: ${c.tollfree}`);
+    if (c.phone) text.push(`<ParaStyle:PhoneWeb>p ${c.phone}`);
+    if (c.tollfree) text.push(`<ParaStyle:PhoneWeb>p ${c.tollfree}`);
     // if (c.fax) text.push(`<ParaStyle:PhoneWeb>Fax: ${c.fax}`);
-    if (c.website) text.push(`<ParaStyle:PhoneWeb>W ${c.website}`);
+    if (c.website) text.push(`<ParaStyle:PhoneWeb>w ${c.website}`);
     if (c.body) {
       text.push(`<ParaStyle:Desc>${formatText(c.body)}`);
     }
-    if (c.publicEmail) text.push(`<ParaStyle:Desc>E ${c.publicEmail}`);
+    if (c.publicEmail) text.push(`<ParaStyle:Desc>e ${c.publicEmail}`);
     text.push(`<ParaStyle:${accountType}>${index + 1}`);
     return text.join('\n');
   });
