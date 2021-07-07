@@ -9,42 +9,36 @@ module.exports = async ({ apollo }) => {
     if (company.boothNumber) {
       const booths = company.boothNumber.split(',');
       booths.forEach((booth) => {
-        companiesByBooth.push({ ...company, boothNumber: booth.trim() });
+        const id = booth.split('-')[0];
+        companiesByBooth.push({ ...company, boothNumber: booth, boothId: id });
       });
     }
   });
 
-  companiesByBooth.sort((a, b) => a.boothNumber.localeCompare(b.boothNumber));
+  companiesByBooth.sort((a, b) => a.boothId.padStart(6, '0').localeCompare(b.boothId.padStart(6, '0')));
 
-  const alphaCompanies = companiesByBooth.filter(company => /^[a-zA-Z]/.test(company.boothNumber));
-  const nuumberCompanies = companiesByBooth.filter(company => /^[0-9]/.test(company.boothNumber));
+  // const alphaCompanies = companiesByBooth.filter(company => /^[a-zA-Z]/.test(company.boothId));
+  // const nuumberCompanies = companiesByBooth.filter(company => /^[0-9]/.test(company.boothId));
 
-  const orederedCompanies = alphaCompanies.concat(nuumberCompanies);
+  // const orederedCompanies = alphaCompanies.concat(nuumberCompanies);
 
 
   // Wrap content in paragraph style
+  let boothNumberHeader = 500;
   const printContent = arr => arr.map((c) => {
     const text = [];
-    // const companyLetter = c.name.substr(0, 1);
-    // if (currentLetter !== companyLetter) {
-    //   const regex = /[^A-Z]/g;
-    //   companyLetter.match(regex);
-    //   if (currentLetter.toUpperCase() !== companyLetter.toUpperCase()) {
-    //     if (!companyLetter.match(regex)) {
-    //       currentLetter = companyLetter;
-    //       text.push(`<ParaStyle:cLetter>${currentLetter}`);
-    //     }
-    //   }
-    // }
-    text.push(`<ParaStyle:cBoothNumber>${formatText(c.boothNumber)}`);
-    text.push(`<ParaStyle:cName>${formatText(c.name)}`);
+    if (c.boothId > boothNumberHeader) {
+      text.push(`<ParaStyle:ByBoothHead>${boothNumberHeader}`);
+      boothNumberHeader += 500;
+    }
+    text.push(`<ParaStyle:ByBooth>${formatText(c.boothNumber)} \t ${formatText(c.name)}`);
     return text.join('\n');
   });
 
   const lines = [
     '<ASCII-MAC>', // @todo detect and/or make query a param
     // '<ParaStyle:cLetter>123',
-    ...printContent(Object.values(orederedCompanies)),
+    ...printContent(Object.values(companiesByBooth)),
   ];
   const cleanLines = lines.filter(e => e);
 
