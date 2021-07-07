@@ -15,6 +15,7 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         name
         boothNumber: customAttribute(input: { path: "boothNumber" })
         teaser(input: { mutation: Magazine })
+        body(input: { mutation: Magazine })
         taxonomy {
           edges {
             node {

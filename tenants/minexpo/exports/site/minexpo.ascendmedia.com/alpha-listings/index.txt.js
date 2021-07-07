@@ -41,10 +41,8 @@ module.exports = async ({ apollo }) => {
     if (c.tollfree) text.push(`<ParaStyle:PhoneWeb>TFP: ${c.tollfree}`);
     // if (c.fax) text.push(`<ParaStyle:PhoneWeb>Fax: ${c.fax}`);
     if (c.website) text.push(`<ParaStyle:PhoneWeb>W ${c.website}`);
-    if (c.teaser && c.teaser !== '...') {
-      text.push(`<ParaStyle:Desc>${c.teaser}`);
-    } else {
-      text.push('<ParaStyle:Desc>Need To Figure Out how this will be populated');
+    if (c.body) {
+      text.push(`<ParaStyle:Desc>${formatText(c.body)}`);
     }
     if (c.publicEmail) text.push(`<ParaStyle:Desc>E ${c.publicEmail}`);
     text.push(`<ParaStyle:${accountType}>${index + 1}`);
