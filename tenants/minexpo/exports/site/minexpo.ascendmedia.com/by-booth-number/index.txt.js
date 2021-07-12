@@ -28,10 +28,10 @@ module.exports = async ({ apollo }) => {
   const printContent = arr => arr.map((c) => {
     const text = [];
     if (c.boothId > boothNumberHeader) {
-      text.push(`<ParaStyle:ByBoothHead>${boothNumberHeader}`);
+      text.push(`<ParaStyle:BoothHead>${boothNumberHeader}`);
       boothNumberHeader += 500;
     }
-    text.push(`<ParaStyle:ByBooth>${formatText(c.boothNumber)} \t ${formatText(c.name)}`);
+    text.push(`<ParaStyle:ByBooth>${formatText(c.boothNumber)}\t${formatText(c.name)}`);
     return text.join('\n');
   });
 

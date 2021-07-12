@@ -53,9 +53,9 @@ module.exports = async ({ apollo }) => {
     if (c.boothNumber) {
       const strBooths = c.boothNumber.split(',');
       const cleanBooths = strBooths.map(n => n.trim());
-      text.push(`<ParaStyle:PCatBody>${formatText(c.name)} \t ${formatText(cleanBooths.join(', '))}`);
+      text.push(`<ParaStyle:PCat_body>${formatText(c.name)}\t${formatText(cleanBooths.join(', '))}`);
     } else {
-      text.push(`<ParaStyle:PCatBody>${formatText(c.name)}`);
+      text.push(`<ParaStyle:PCat_body>${formatText(c.name)}`);
     }
     return text.join('\n');
   });
@@ -71,7 +71,7 @@ module.exports = async ({ apollo }) => {
     // Only include categories if they have content or children
     ...(content.length || children.length ? [
       // `<ParaStyle:c${parent ? 'Subcategory' : 'Category'}>${name}`,
-      `<ParaStyle:PCatHead>${name}`,
+      `<ParaStyle:PCat_head>${name}`,
       ...printContent(content),
       ...children.reduce(printSection, []),
     ] : []),

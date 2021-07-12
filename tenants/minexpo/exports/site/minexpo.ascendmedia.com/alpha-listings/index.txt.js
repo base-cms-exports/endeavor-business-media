@@ -28,7 +28,7 @@ module.exports = async ({ apollo }) => {
     if (c.boothNumber) {
       const strBooths = c.boothNumber.split(',');
       const cleanBooths = strBooths.map(n => n.trim());
-      text.push(`<ParaStyle:Co>${formatText(c.name)} \t ${cleanBooths.join(', ')}`);
+      text.push(`<ParaStyle:Co>${formatText(c.name)}\t${cleanBooths.join(', ')}`);
     } else {
       text.push(`<ParaStyle:Co>${formatText(c.name)}`);
     }
@@ -42,7 +42,7 @@ module.exports = async ({ apollo }) => {
     if (c.phone) text.push(`<ParaStyle:PhoneWeb>p ${c.phone}`);
     if (c.tollfree) text.push(`<ParaStyle:PhoneWeb>p ${c.tollfree}`);
     // if (c.fax) text.push(`<ParaStyle:PhoneWeb>Fax: ${c.fax}`);
-    if (c.website) text.push(`<ParaStyle:PhoneWeb>w ${c.website}`);
+    if (c.website) text.push(`<ParaStyle:PhoneWeb>w ${c.website.replace('https://', '').replace('http://', '')}`);
     if (c.body) {
       text.push(`<ParaStyle:Desc>${formatText(c.body)}`);
     }

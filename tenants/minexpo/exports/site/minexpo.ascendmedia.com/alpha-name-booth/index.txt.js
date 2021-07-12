@@ -25,7 +25,7 @@ module.exports = async ({ apollo }) => {
     if (c.boothNumber) {
       const strBooths = c.boothNumber.split(',');
       const cleanBooths = strBooths.map(n => n.trim());
-      text.push(`<ParaStyle:ByAlpha>${formatText(c.name)} \t ${cleanBooths.join(', ')}`);
+      text.push(`<ParaStyle:ExhAlpha>${formatText(c.name)}\t${cleanBooths.join(', ')}`);
     }
     return text.join('\n');
   });
