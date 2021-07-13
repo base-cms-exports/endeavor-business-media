@@ -30,7 +30,6 @@ module.exports = async ({ apollo }) => {
 
     const accountType = (c.primarImage) ? 'Acct_logo' : 'Acct';
     if (c.primaryImage) {
-      text.push(`@${c.primaryImage.source.name}@`);
       const imgPath = `https://cdn.base.parameter1.com/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
       if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
     }
@@ -44,7 +43,8 @@ module.exports = async ({ apollo }) => {
     if (c.address1) text.push(`<ParaStyle:Add>${formatText(c.address1)}`);
     if (c.address2) text.push(`<ParaStyle:Add>${formatText(c.address2)}`);
     if (c.cityStateZip && c.country && !['us', 'united states', 'usa'].includes(c.country.toLowerCase())) {
-      text.push(`<ParaStyle:Add>${formatText(c.cityStateZip)} ${formatText(c.country)}`);
+      text.push(`<ParaStyle:Add>${formatText(c.cityStateZip)}`);
+      text.push(`<ParaStyle:Add>${formatText(c.country)}`);
     } else if (c.cityStateZip) {
       text.push(`<ParaStyle:Add>${formatText(c.cityStateZip)}`);
     }
