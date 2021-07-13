@@ -1,7 +1,11 @@
+const stripTags = require('striptags');
 const allPublishedCopanyContentQuery = require('./queries/company');
+const { downloadImages, zipItUp } = require('../utils/image-handler');
 const { retrieveCompanies } = require('../utils/retrieve-companies');
 const { formatText } = require('../utils/format-text');
 
+const exportName = `export-${Date.now()}.zip`;
+const companyLogos = [];
 
 let currentLetter = '#';
 module.exports = async ({ apollo }) => {
@@ -23,8 +27,13 @@ module.exports = async ({ apollo }) => {
         }
       }
     }
+
     const accountType = (c.primarImage) ? 'Acct_logo' : 'Acct';
-    if (c.primarImage) text.push(`<ParaStyle:Logo>${c.primaryImage.source.name}`);
+    if (c.primaryImage) {
+      text.push(`@${c.primaryImage.source.name}@`);
+      const imgPath = `https://cdn.base.parameter1.com/${c.primaryImage.filePath}/original/${c.primaryImage.source.name}`;
+      if (!companyLogos.includes(imgPath)) companyLogos.push(imgPath);
+    }
     if (c.boothNumber) {
       const strBooths = c.boothNumber.split(',');
       const cleanBooths = strBooths.map(n => n.trim());
@@ -44,7 +53,7 @@ module.exports = async ({ apollo }) => {
     // if (c.fax) text.push(`<ParaStyle:PhoneWeb>Fax: ${c.fax}`);
     if (c.website) text.push(`<ParaStyle:PhoneWeb>w ${c.website.replace('https://', '').replace('http://', '')}`);
     if (c.body) {
-      text.push(`<ParaStyle:Desc>${formatText(c.body)}`);
+      text.push(`<ParaStyle:Desc>${formatText(stripTags(c.body))}`);
     }
     if (c.publicEmail) text.push(`<ParaStyle:Desc>e ${c.publicEmail}`);
     text.push(`<ParaStyle:${accountType}>${index + 1}`);
@@ -57,6 +66,18 @@ module.exports = async ({ apollo }) => {
     ...printContent(companies),
   ];
   const cleanLines = lines.filter(e => e);
+
+  if (companyLogos.length !== 0) {
+    const tmpDir = `${__dirname}/tmp`;
+    // Tempararly download all logs for zipping up.
+    await downloadImages(`${tmpDir}/images`, companyLogos);
+    // Zip up all logos required for export
+    zipItUp(`${tmpDir}/images`, tmpDir, exportName);
+    // push a tmp zip file of image to the S3 server
+    // uploadToS3('base-cms-exports', 'exports', `${tmpDir}/${exportName}`);
+
+    // cleanLines.push(`<ParaStyel:LogoDownloadPath>https://base-cms-exports.s3.amazonaws.com/exports/${exportName}`);
+  }
 
   // @todo port special character filter from php
   return cleanLines.join('\n');
