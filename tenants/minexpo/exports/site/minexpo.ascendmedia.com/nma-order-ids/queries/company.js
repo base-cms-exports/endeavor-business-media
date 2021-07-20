@@ -15,6 +15,13 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         name
         boothNumber: customAttribute(input: { path: "boothNumber" })
         nmaOrder: customAttribute(input: { path: "nmaOrder" })
+        taxonomy {
+          edges {
+            node {
+              id
+            }
+          }
+        }
         websiteSchedules {
           start
           end

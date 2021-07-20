@@ -15,8 +15,9 @@ module.exports = async ({ apollo }) => {
 
   // Wrap content in paragraph style
   const printContent = arr => arr.map((c) => {
+    const onAscend = c.taxonomyIds.includes(3193661) ? 'True' : '';
     const text = [];
-    text.push(`${formatText(c.nmaOrder)} \t ${c.id} \t ${formatText(c.name)}`);
+    text.push(`${formatText(c.nmaOrder)}\t${c.id}\t${formatText(c.name)}\t${c.boothNumber}\t${onAscend}`);
     return text.join('\n');
   });
 

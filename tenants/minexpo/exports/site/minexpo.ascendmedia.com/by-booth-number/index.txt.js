@@ -9,13 +9,13 @@ module.exports = async ({ apollo }) => {
     if (company.boothNumber) {
       const booths = company.boothNumber.split(',');
       booths.forEach((booth) => {
-        const id = booth.split('-')[0];
+        const id = booth.trim().split('-')[0];
         companiesByBooth.push({ ...company, boothNumber: booth, boothId: id });
       });
     }
   });
 
-  companiesByBooth.sort((a, b) => a.boothId.padStart(6, '0').localeCompare(b.boothId.padStart(6, '0')));
+  companiesByBooth.sort((a, b) => a.boothId.padStart(10, '0').localeCompare(b.boothId.padStart(10, '0')));
 
   // const alphaCompanies = companiesByBooth.filter(company => /^[a-zA-Z]/.test(company.boothId));
   // const nuumberCompanies = companiesByBooth.filter(company => /^[0-9]/.test(company.boothId));
