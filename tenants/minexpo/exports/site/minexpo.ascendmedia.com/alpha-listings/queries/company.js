@@ -36,16 +36,16 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
           cityStateZip
           country
         }
-        primaryImage {
-          id
-          src
-          alt
-          isLogo
-          source {
-            name
-          }
-          filePath
-        }
+        # primaryImage {
+        #   id
+        #   src
+        #   alt
+        #   isLogo
+        #   source {
+        #     name
+        #   }
+        #   filePath
+        # }
         websiteSchedules {
           start
           end
