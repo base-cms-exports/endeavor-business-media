@@ -51,7 +51,7 @@ module.exports = async ({ apollo }) => {
     if (c.phone) text.push(`<ParaStyle:PhoneWeb>p ${c.phone}`);
     if (c.tollfree) text.push(`<ParaStyle:PhoneWeb>p ${c.tollfree}`);
     // if (c.fax) text.push(`<ParaStyle:PhoneWeb>Fax: ${c.fax}`);
-    if (c.website) text.push(`<ParaStyle:PhoneWeb>w ${c.website.replace('https://', '').replace('http://', '')}`);
+    if (c.website) text.push(`<ParaStyle:PhoneWeb>w ${c.website.replace('https://', '').replace('http://', '').replace('www.', '')}`);
     if (c.body) {
       text.push(`<ParaStyle:Desc>${formatText(stripTags(c.body))}`);
     }
