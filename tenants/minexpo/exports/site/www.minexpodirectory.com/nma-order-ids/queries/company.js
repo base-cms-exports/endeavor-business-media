@@ -1,8 +1,8 @@
 const gql = require('graphql-tag');
 
 module.exports = gql`
-query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) {
-  allPublishedContent(input: $input) {
+query InDesignExportCompaniesByCategory($input: AllContentQueryInput!) {
+  allContent(input: $input) {
     totalCount
     pageInfo {
       hasNextPage
@@ -12,6 +12,8 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
       cursor
       node {
         id
+        status
+        type
         name
         boothNumber: customAttribute(input: { path: "boothNumber" })
         nmaOrder: customAttribute(input: { path: "nmaOrder" })
@@ -22,12 +24,19 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
             }
           }
         }
+        ... on ContentCompany {
+          phone
+          tollfree
+          website
+        }
         websiteSchedules {
           start
           end
           section {
             id
             name
+            fullName
+            alias
           }
         }
       }
