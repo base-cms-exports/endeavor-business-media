@@ -21,16 +21,7 @@ const retrieveCompanies = async (apollo, query) => {
     const sectionIds = getAsArray(company, 'websiteSchedules')
       .filter(({ start, end }) => start < now && (!end || end > now))
       .map(({ section }) => section.id);
-    // taxonomy {
-    //   edges {
-    //     node {
-    //       id
-    //     }
-    //   }
-    // }
-    const taxonomyIds = getAsArray(company, 'taxonomy.edges')
-      .map(({ node }) => node.id);
-    return { ...company, sectionIds, taxonomyIds };
+    return { ...company, sectionIds };
   });
 };
 module.exports = { retrieveCompanies };

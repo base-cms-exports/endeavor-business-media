@@ -14,17 +14,13 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         id
         name
         teaser(input: { mutation: Magazine })
-        body(input: { mutation: Magazine })
         ... on ContentCompany {
           phone
           tollfree
-          fax
           publicEmail
           website
         }
         ... on Addressable {
-          address1
-          address2
           cityStateZip
           country
         }
