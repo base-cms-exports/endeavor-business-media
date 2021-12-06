@@ -8,7 +8,7 @@ module.exports = async ({ apollo }) => {
 
   allCompanies.sort((a, b) => a.name.localeCompare(b.name));
 
-  const lines = [['id', 'ComapnyName', 'email', 'CompanyUpdateLink']];
+  const lines = [['baseLink', 'id', 'ComapnyName', 'email', 'CompanyUpdateLink']];
 
   allCompanies.forEach((c) => {
     const listingEmail = getAsArray(c, 'listingContacts').reduce((arr, contact) => {
@@ -17,7 +17,22 @@ module.exports = async ({ apollo }) => {
     }, []);
     const compEmail = (c.publicEmail) ? c.publicEmail : c.email;
     if (listingEmail.length === 0 && compEmail) listingEmail.push(compEmail);
-    if (listingEmail.length !== 0) lines.push([c.id, replaceCharacters(c.name, ',', ''), listingEmail.join(' '), `https://update.athleticbusiness.com/portal/${c.hash}`]);
+    if (listingEmail.length !== 0) {
+      lines.push([
+        `https://manage.athleticbusiness.com/content/edit/company/${c.id}`,
+        c.id, replaceCharacters(c.name, ',', ''),
+        listingEmail.join(' '),
+        `https://update.athleticbusiness.com/portal/${c.hash}`,
+      ]);
+    } else {
+      lines.push([
+        `https://manage.athleticbusiness.com/content/edit/company/${c.id}`,
+        c.id,
+        replaceCharacters(c.name, ',', ''),
+        '',
+        `https://update.athleticbusiness.com/portal/${c.hash}`,
+      ]);
+    }
   });
   return lines.join('\n');
 };
