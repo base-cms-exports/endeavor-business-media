@@ -4,7 +4,7 @@ const { retrieveCompanies } = require('../utils/retrieve-companies');
 const { replaceCharacters } = require('../utils/replace-characters');
 
 module.exports = async ({ apollo }) => {
-  const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery);
+  const allCompanies = await retrieveCompanies(apollo, allPublishedContentQuery, '60f6ec0bd28860bc3384daa1');
 
   allCompanies.sort((a, b) => a.name.localeCompare(b.name));
 

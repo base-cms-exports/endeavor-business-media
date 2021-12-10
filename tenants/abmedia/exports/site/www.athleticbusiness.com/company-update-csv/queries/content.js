@@ -13,6 +13,20 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
       node {
         id
         published
+        primarySite {
+          id
+        }
+        websiteSchedules {
+          start
+          end
+          section {
+            id
+            name
+            site {
+              id
+            }
+          }
+        }
         ... on Contactable {
           email
         }

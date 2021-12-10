@@ -1,7 +1,7 @@
 const { getAsArray } = require('@parameter1/base-cms-object-path');
 const paginateQuery = require('@endeavor-business-media/common/paginate-query');
 
-const retrieveCompanies = async (apollo, query) => {
+const retrieveCompanies = async (apollo, query, siteId) => {
   const promise = await paginateQuery({
     client: apollo,
     query,
@@ -16,12 +16,22 @@ const retrieveCompanies = async (apollo, query) => {
     rootValue: 'allPublishedContent',
   });
   const now = Date.now().valueOf();
-  return promise.map((company) => {
+  const siteCompanies = promise.reduce((arr, company) => {
     // Add logic to base-cms graph to handle publised after date input instead of this
-    const sectionIds = getAsArray(company, 'websiteSchedules')
-      .filter(({ start, end }) => start < now && (!end || end > now))
-      .map(({ section }) => section.id);
-    return { ...company, sectionIds };
-  });
+    const sectionIds = (siteId)
+      ? getAsArray(company, 'websiteSchedules')
+        // eslint-disable-next-line max-len
+        .filter(({ section, start, end }) => section.site.id === siteId && start < now && (!end || end > now))
+        .map(({ section }) => section.id)
+      : getAsArray(company, 'websiteSchedules')
+        .filter(({ start, end }) => start < now && (!end || end > now))
+        .map(({ section }) => section.id);
+
+    if (sectionIds.length || (siteId && company.primarySite.id === siteId)) {
+      arr.push({ ...company, sectionIds });
+    }
+    return arr;
+  }, []);
+  return siteCompanies;
 };
 module.exports = { retrieveCompanies };
