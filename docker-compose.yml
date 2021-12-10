@@ -25,6 +25,9 @@ x-env-defaults: &env
 x-env-tauron: &env-tauron
   GRAPHQL_URI: ${GRAPHQL_URI-https://tauron.graphql.base.parameter1.com}
 
+x-env-virgon: &env-virgon
+  GRAPHQL_URI: ${GRAPHQL_URI-https://virgon.graphql.base.parameter1.com}
+
 services:
   terminal:
     <<: *node
@@ -39,6 +42,23 @@ services:
     entrypoint: ["yarn"]
     environment:
       <<: *env
+
+  abmedia:
+    <<: *node
+    <<: *export-cmd
+    working_dir: /root/tenants/abmedia
+    environment:
+      <<: *env
+      <<: *env-virgon
+      PORT: 80
+      EXPOSED_PORT: 19400
+      LIVERELOAD_PORT: 29400
+      TENANT_KEY: abmedia_all
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "19400:80"
+      - "29400:29400"
 
   minexpo:
     <<: *node
