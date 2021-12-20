@@ -4,11 +4,9 @@ const { getChildSections } = require('../utils/get-child-sections');
 const websiteSectionsQuery = require('./queries/sections');
 const { retrieveCompanies } = require('../utils/retrieve-companies');
 const { retrieveSections } = require('../utils/retrieve-sections');
-// const { retrieveFilterdCompanies } = require('../utils/retrieve-filtered-companies');
 const { formatText } = require('../utils/format-text');
 
 const mapHierarchy = (sections, companies) => sections.reduce((arr, section) => {
-
   const childNodes = getAsArray(section, 'children.edges').map(({ node }) => node);
   const children = childNodes.length ? mapHierarchy(childNodes, companies) : [];
   const filteredCompanies = companies
