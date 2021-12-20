@@ -1,4 +1,4 @@
-const { getAsArray } = require('@parameter1/base-cms-object-path');
+const { get, getAsArray } = require('@parameter1/base-cms-object-path');
 const paginateQuery = require('@endeavor-business-media/common/paginate-query');
 
 const retrieveCompanies = async (apollo, query, siteId) => {
@@ -21,13 +21,13 @@ const retrieveCompanies = async (apollo, query, siteId) => {
     const sectionIds = (siteId)
       ? getAsArray(company, 'websiteSchedules')
         // eslint-disable-next-line max-len
-        .filter(({ section, start, end }) => section.site.id === siteId && start < now && (!end || end > now))
+        .filter(({ section, start, end }) => get(section, 'site.id') === siteId && start < now && (!end || end > now))
         .map(({ section }) => section.id)
       : getAsArray(company, 'websiteSchedules')
         .filter(({ start, end }) => start < now && (!end || end > now))
         .map(({ section }) => section.id);
 
-    if (sectionIds.length || (siteId && company.primarySite.id === siteId)) {
+    if (sectionIds.length || (siteId && get(company, 'primarySite.id') === siteId)) {
       arr.push({ ...company, sectionIds });
     }
     return arr;
