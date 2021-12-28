@@ -14,14 +14,29 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         id
         published
         name
-        boothNumber: customAttribute(input: { path: "boothNumber" })
-        taxonomy {
-          edges {
-            node {
-              id
-            }
-          }
+        teaser(input: { mutation: Magazine })
+        labels
+        ... on ContentCompany {
+          phone
+          tollfree
+          publicEmail
+          website
         }
+        ... on Addressable {
+          cityStateZip
+          country
+        }
+        primaryImage {
+          id
+          src
+          alt
+          isLogo
+          source {
+            name
+          }
+          filePath
+        }
+        labels
         websiteSchedules {
           start
           end
