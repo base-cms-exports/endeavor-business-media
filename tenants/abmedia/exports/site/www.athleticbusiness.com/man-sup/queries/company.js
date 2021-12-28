@@ -14,6 +14,7 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
         id
         name
         teaser(input: { mutation: Magazine })
+        labels
         ... on ContentCompany {
           phone
           tollfree
@@ -21,25 +22,28 @@ query InDesignExportCompaniesByCategory($input: AllPublishedContentQueryInput!) 
           website
         }
         ... on Addressable {
-          cityStateZip
-          country
+          city
+          state
         }
-        primaryImage {
-          id
-          src
-          alt
-          isLogo
-          source {
-            name
-          }
-          filePath
-        }
+        # primaryImage {
+        #   id
+        #   src
+        #   alt
+        #   isLogo
+        #   source {
+        #     name
+        #   }
+        #   filePath
+        # }
         websiteSchedules {
           start
           end
           section {
             id
             name
+            site {
+              id
+            }
           }
         }
       }
