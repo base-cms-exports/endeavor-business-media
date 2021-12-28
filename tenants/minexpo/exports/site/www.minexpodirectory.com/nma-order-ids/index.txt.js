@@ -18,9 +18,7 @@ module.exports = async ({ apollo }) => {
     // const onAscend = c.taxonomyIds.includes(3193661) ? 'True' : '';
     const schedules = getAsArray(c, 'websiteSchedules');
 
-    const productCats = schedules.filter((schedule) => {
-      return schedule.section.alias.substring(0, 10) === 'directory/';
-    });
+    const productCats = schedules.filter(schedule => schedule.section.alias.substring(0, 10) === 'directory/');
     const productCatNames = productCats.map(cat => cat.section.name);
 
     const text = [];

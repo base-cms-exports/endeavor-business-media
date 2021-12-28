@@ -24,7 +24,6 @@ const retrieveCompanies = async (apollo, query) => {
       .map(({ node }) => node.id);
     return { ...company, sectionIds, taxonomyIds };
   }).filter((company) => {
-
     const { type } = company;
     return type === 'company';
   });
