@@ -27,7 +27,7 @@ const printContent = arr => arr.map((c) => {
   const phone = c.tollFree ? c.tollFree : c.phone;
   const webPhone = [];
   if (phone) webPhone.push(phone);
-  if (c.website) webPhone.push(c.website);
+  if (c.website) webPhone.push(c.website.replace('https://', '').replace('http://', ''));
   if (webPhone.length) text.push(`<ParaStyle:BG PHONE>${formatText(webPhone.join(' &bull; '))}`);
   // if (c.teaser !== '...') text.push(`<ParaStyle:BG ARCH ital>${c.teaser}`);
   return text.join('\n');
