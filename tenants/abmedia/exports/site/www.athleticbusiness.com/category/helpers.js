@@ -24,7 +24,7 @@ const printContent = arr => arr.map((c) => {
   const text = [];
   const pStyle = (c.labels && (c.labels.includes('Buyers Guide Advertiser') || c.labels.includes('Buyers Guide Microsite'))) ? 'BG MAN CO. BOLD' : 'BG CO.';
   text.push(`<ParaStyle:${pStyle}>${formatText(c.name)}`);
-  const phone = c.tollFree ? c.tollFree : c.phone;
+  const phone = c.tollfree ? c.tollfree : c.phone;
   const webPhone = [];
   if (phone) webPhone.push(phone);
   if (c.website) webPhone.push(c.website.replace('https://', '').replace('http://', ''));
