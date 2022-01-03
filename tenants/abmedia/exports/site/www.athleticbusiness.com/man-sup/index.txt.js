@@ -1,5 +1,4 @@
 const allPublishedCopanyContentQuery = require('./queries/company');
-const { downloadImages, zipItUp } = require('../utils/image-handler');
 const { retrieveCompanies } = require('../utils/retrieve-companies');
 const { formatText } = require('../utils/format-text');
 
