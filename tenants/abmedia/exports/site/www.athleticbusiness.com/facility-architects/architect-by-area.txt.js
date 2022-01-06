@@ -10,12 +10,18 @@ module.exports = async ({ apollo }) => {
 
   const printContent = arr => arr.map((c) => {
     const text = [];
-    text.push(`<ParaStyle:BG MAN CO.>${formatText(c.name)}`);
+    const isAdvertiser = (c.labels && (c.labels.includes('Buyers Guide Advertiser') || c.labels.includes('Buyers Guide Microsite')));
+    if (isAdvertiser) {
+      text.push(`<ParaStyle:BG MAN CO. BOLD>${formatText(c.name)}`);
+    } else {
+      text.push(`<ParaStyle:BG CO.>${formatText(c.name)}`);
+    }
+
     const line1 = [];
     if (c.city) line1.push(c.city);
     const phone = c.tollfree ? c.tollfree : c.phone;
     if (phone) line1.push(phone);
-    if (line1.length) text.push(`<ParaStyle:BG MAN BODY>${formatText(line1.join(' &bull; '))}`);
+    if (line1.length) text.push(`<ParaStyle:BG PHONE>${formatText(line1.join(' &bull; '))}`);
     return text.join('\n');
   });
 
@@ -24,8 +30,8 @@ module.exports = async ({ apollo }) => {
     const { key, name } = a;
     const comps = companies.filter((company => company.state === key));
     if (comps.length) {
-      text.push(`<ParaStyle:BG Cat>${formatText(name)}`);
-      text.push(printContent(comps));
+      text.push(`<ParaStyle:BG CATEGORY>${formatText(name)}`);
+      text.push(...printContent(comps));
     }
     return text.join('\n');
   });
