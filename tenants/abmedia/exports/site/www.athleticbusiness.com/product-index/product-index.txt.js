@@ -1,5 +1,4 @@
 const { getAsArray } = require('@parameter1/base-cms-object-path');
-const { getChildSections } = require('../utils/get-child-sections');
 const websiteSectionsQuery = require('./queries/sections');
 const { retrieveSections } = require('../utils/retrieve-sections');
 const { formatText } = require('../utils/format-text');
